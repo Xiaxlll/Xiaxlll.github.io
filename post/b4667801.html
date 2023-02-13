@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding | xxl's blog</title><meta name="author" content="xxl"><meta name="copyright" content="xxl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="课程来自Coursera Bin packing problem  定义：\(𝑁\)件物品，每件物品有体积\({𝑠_𝑖}\), 不失一般性地，可以约定\({s_i}\leq1\), 有容量为\(1\)箱子, 要用尽可能少的箱子容纳所有的物品。 \(NP-hard\)问题  The Next Fit algorithm  思想：依次考虑每个物品, 如果这个物品能放入当前箱子, 就放入, 否则关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding">
+<meta property="og:url" content="http://example.com/post/b4667801.html">
+<meta property="og:site_name" content="xxl&#39;s blog">
+<meta property="og:description" content="课程来自Coursera Bin packing problem  定义：\(𝑁\)件物品，每件物品有体积\({𝑠_𝑖}\), 不失一般性地，可以约定\({s_i}\leq1\), 有容量为\(1\)箱子, 要用尽可能少的箱子容纳所有的物品。 \(NP-hard\)问题  The Next Fit algorithm  思想：依次考虑每个物品, 如果这个物品能放入当前箱子, 就放入, 否则关">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png">
+<meta property="article:published_time" content="2023-01-08T18:27:29.000Z">
+<meta property="article:modified_time" content="2023-01-25T13:00:26.071Z">
+<meta property="article:author" content="xxl">
+<meta property="article:tag" content="近似算法">
+<meta property="article:tag" content="Bin-Packing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/b4667801"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-25 21:00:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/wallhaven-d5zmlm.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xxl's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-08T18:27:29.000Z" title="发表于 2023-01-09 02:27:29">2023-01-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-25T13:00:26.071Z" title="更新于 2023-01-25 21:00:26">2023-01-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/coursera/">coursera</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/coursera/Approximation-Algorithms-Part-I/">Approximation Algorithms Part I</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>课程来自<a
+target="_blank" rel="noopener" href="https://www.coursera.org/learn/approximation-algorithms-part-1/home/week/1">Coursera</a></p>
+<h1 id="bin-packing-problem">Bin packing problem</h1>
+<ul>
+<li><strong>定义</strong>：<span
+class="math inline">\(𝑁\)</span>件物品，每件物品有体积<span
+class="math inline">\({𝑠_𝑖}\)</span>, 不失一般性地，可以约定<span
+class="math inline">\({s_i}\leq1\)</span>, 有容量为<span
+class="math inline">\(1\)</span>箱子,
+要用尽可能少的箱子容纳所有的物品。</li>
+<li><span class="math inline">\(NP-hard\)</span>问题</li>
+</ul>
+<h2 id="the-next-fit-algorithm">The Next Fit algorithm</h2>
+<ul>
+<li><strong>思想</strong>：依次考虑每个物品, 如果这个物品能放入当前箱子,
+就放入, 否则关闭当前箱子, 打开一个新的箱子放入这个物品。</li>
+<li><strong>近似比</strong>：
+<ul>
+<li><span class="math inline">\(proof\)</span>:把编号相邻的箱子配对,
+考虑箱子<span class="math inline">\(2i−1\)</span>和箱子<span
+class="math inline">\(2i\)</span>。我们打开了箱子<span
+class="math inline">\(2i\)</span>, 说明箱子<span
+class="math inline">\(2i−1\)</span>里面的物品体积之和加上箱子<span
+class="math inline">\(2i\)</span>里面的第一个物品的体积, 必然是大于<span
+class="math inline">\(1\)</span>的，否则按照算法流程会把那个物品放入箱子<span
+class="math inline">\(2i−1\)</span>.</li>
+<li>设按照Next Fit算法用了<span
+class="math inline">\(k\)</span>个箱子，其中最后一个箱子的编号为<span
+class="math inline">\(L\)</span></li>
+<li>有<span class="math inline">\(O P T \geq\left\lceil\sum_{i=1}^N
+s_i\right\rceil \geq\left\lceil\sum_{i=1}^{L-1}
+s_i\right\rceil\)</span></li>
+<li>因为<span class="math inline">\(\sum_{i=1}^{L-1}
+s_i&gt;\left\lfloor\frac{K}{2}\right\rfloor\)</span>，<span
+class="math inline">\(\left\lfloor\frac{K}{2}\right\rfloor\)</span>是整数，所以<span
+class="math inline">\(\left\lfloor\frac{K}{2}\right\rfloor
+\leq\left\lceil\sum_{i=1}^{L-1} s_i\right\rceil-1\)</span></li>
+<li>于是有<span class="math inline">\(\frac{K-1}{2}
+\leq\left\lfloor\frac{K}{2}\right\rfloor \leq O P T-1\)</span></li>
+<li>即<span class="math inline">\(K \leq 2 O P T-1\)</span></li>
+</ul></li>
+<li><strong>算法的紧性：</strong>
+<ul>
+<li>(<span class="math inline">\(2𝑂𝑃𝑇−2\)</span>的例子)有<span
+class="math inline">\(4n\)</span>个物品，满足<span
+class="math inline">\(S_{2 i-1}=\frac{1}{2}, S_{2 i}=\frac{1}{2
+n}\)</span>，显然<span class="math inline">\(OPT=n+1\)</span>,此时<span
+class="math inline">\(NF\)</span>给出的结果为<span
+class="math inline">\(2n\)</span>.</li>
+</ul></li>
+</ul>
+<h2 id="a-linear-program-for-bin-packingfailed">A Linear program for
+bin-packing（failed）</h2>
+<ul>
+<li><strong>整数规划模型：</strong>
+<ul>
+<li><strong>变量：</strong><span
+class="math inline">\(\mathrm{x}_{\mathrm{ij}} \in\{\mathbf{0},
+\mathbf{1}\}\)</span>，当物品<span
+class="math inline">\(i\)</span>放在箱子<span
+class="math inline">\(j\)</span>中时，<span
+class="math inline">\(x_{ij}=1\)</span>.</li>
+<li><strong>约束：</strong>
+<ul>
+<li>约束1:因为每件物品只能放到一个箱子中，对于物品<span
+class="math inline">\(b\)</span>，<span
+class="math inline">\(\mathrm{x}_{\mathrm{b} 1}+\mathrm{x}_{\mathrm{b}
+2}+\mathrm{x}_{\mathrm{b} 3}+\mathrm{x}_{\mathrm{b} 4}=1\)</span></li>
+<li>约束2:每个箱子内物体的体积和需小于1，<span
+class="math inline">\(\mathbf{x}_{\mathrm{aj}}
+\mathbf{s}_{\mathbf{a}}+\mathbf{x}_{\mathrm{bj}}
+\mathrm{s}_{\mathrm{b}}+\cdots+\mathrm{x}_{\mathrm{fj}}
+\mathrm{s}_{\mathbf{f}} \leq \mathbf{1}\)</span></li>
+</ul></li>
+</ul></li>
+<li><strong>线性规划模型：</strong></li>
+<li><span class="math inline">\(n\)</span> items, <span
+class="math inline">\(K\)</span> bins <span
+class="math inline">\(\forall i: \quad \sum_j x_{i j}=1\)</span> <span
+class="math inline">\(\forall j: \quad \sum_i x_{i j} s_i \leq
+1\)</span> <span class="math inline">\(\forall i, j: 0 \leq x_{i j} \leq
+1\)</span></li>
+</ul>
+<p><img
+src="../images/Approximation-Algorithms-Week-3-Bin-Packing-Linear-Programming-and-Rounding/image-20230125085343476.png" /></p>
+<h2 id="a-special-case1small-things">a special case1:small things</h2>
+<ul>
+<li>例子：当所有物品的<span
+class="math inline">\(s_i&lt;1/3\)</span>，当关闭一个箱子的时候(除了最后一个箱子),
+这个箱子里面物品体积之和必然<span
+class="math inline">\(\geq2/3\)</span>, 否则还可以接着装物品。
+假设用了<span class="math inline">\(𝐾\)</span>个箱子, 第一个装入第<span
+class="math inline">\(K\)</span>个箱子的物品编号是<span
+class="math inline">\(𝐿\)</span>, 那么有 <span class="math display">\[
+\boldsymbol{O P T}&gt;\sum_{i=1}^N s_i&gt;\sum_{i=1}^{L-1} s_i \geq
+\frac{2}{3}(K-1)
+\]</span></li>
+</ul>
+<p>​ 因此<span class="math inline">\(K \leq \frac{3}{2} O P
+T+1\)</span></p>
+<ul>
+<li>相应地，可以推导所有物品的<span
+class="math inline">\(s_𝑖&lt;\epsilon\)</span>的时候, 有<span
+class="math inline">\(K \leq \frac{1}{1-\epsilon} O P T+1\)</span></li>
+</ul>
+<h2 id="a-special-case2large-itemsfew-sizes">a special case2:large
+items，few sizes</h2>
+<ul>
+<li><p><strong>符号及定义：</strong></p>
+<ul>
+<li><p><strong>Configuration:</strong>
+指将若干物品装入一个箱子的某种方法。比如往一个箱子中装入2个size为0.2的物品和1个size为0.6的物品。因为物品较大，所以configuration较少。</p>
+<p><img
+src="../images/Approximation-Algorithms-Week-3-Bin-Packing-Linear-Programming-and-Rounding/image-20230125141910958.png" /></p></li>
+<li><p><span class="math inline">\(A_{c,s}\)</span>:对于configuration
+<span class="math inline">\(𝑐\)</span>，一个箱子中有<span
+class="math inline">\(A_{C,S}\)</span>个size为<span
+class="math inline">\(s\)</span>的物品。</p></li>
+</ul></li>
+<li><p><strong>近似算法：</strong></p>
+<ul>
+<li><p><strong>Linear Programming:</strong></p>
+<ul>
+<li><p><strong>Input：</strong><span
+class="math inline">\(S={size}\)</span>，对于每种size<span
+class="math inline">\(s\)</span>，有<span
+class="math inline">\(n_s\)</span>个物品.</p></li>
+<li><p><strong>Output:</strong><span
+class="math inline">\(C=\{configurations\}\)</span>，对于configuration<span
+class="math inline">\(c\)</span>所需的箱子数<span
+class="math inline">\(x_c\)</span>。</p></li>
+<li><p>目标函数：<span class="math inline">\(\sum_{\mathbf{c}}
+\mathbf{x}_{\mathbf{c}}\)</span></p></li>
+<li><p>约束：<span class="math inline">\(\sum_{\mathbf{c}}
+\mathbf{a}_{\mathbf{s}, \mathbf{c}} \mathbf{x}_{\mathbf{c}} \geq
+\mathbf{n}_{\mathbf{s}}\)</span></p></li>
+</ul></li>
+<li><p><strong>Rounding：</strong>求出实数线性规划的解向上取整。</p></li>
+</ul></li>
+<li><p><strong>lemma：</strong>假设物体都满足size<span
+class="math inline">\(s\geq\epsilon\)</span>，一共有<span
+class="math inline">\(k\)</span>种不同的size，那么不同configuration的数量<span
+class="math inline">\(\leq K^{\frac{1}{\epsilon}}\)</span></p>
+<ul>
+<li>因为<span
+class="math inline">\(s\geq\epsilon\)</span>，所以对于某个size<span
+class="math inline">\(s\)</span>的configuration数量<span
+class="math inline">\(\leq\frac{1}{\epsilon}\)</span>，因此对于不同的size不同configuration的数量<span
+class="math inline">\(\leq K^{\frac{1}{\epsilon}}\)</span>。</li>
+</ul></li>
+<li><p><strong>算法分析：</strong></p>
+<ul>
+<li>正确性：由线性规划的约束可知此算法是正确的</li>
+<li>近似比：<span class="math inline">\(O P T \geq \sum_c x_c \geq
+\sum_c\left(\left\lceil
+x_c\right\rceil-1\right)\)</span>，configuration数量<span
+class="math inline">\(\leq
+K^{\frac{1}{\epsilon}}\)</span>，因此近似解<span
+class="math inline">\(\leq O P T+K^{\frac{1}{D}}\)</span>。</li>
+</ul></li>
+</ul>
+<h2 id="a-special-case3large-items-many-distinct-sizesless-special">a
+special case3:large items, many distinct sizes（less special）</h2>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">xxl</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/post/b4667801.html">http://example.com/post/b4667801.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">xxl's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95/">近似算法</a><a class="post-meta__tags" href="/tags/Bin-Packing/">Bin-Packing</a></div><div class="post_share"><div class="social-share" data-image="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/a3fa5835.html"><img class="prev-cover" src="/img/1284120.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">cpp学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/post/4b0b12b.html"><img class="next-cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Approximation Algorithms Week 2--Knapsack and Rounding</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/c75b23f2.html" title="The bin-packing problem"><img class="cover" src="/../images/The-bin-packing-problem/coverim.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-07</div><div class="title">The bin-packing problem</div></div></a></div><div><a href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"><img class="cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-07</div><div class="title">Approximation Algorithms Week 1--Vertex cover and Linear Programmng</div></div></a></div><div><a href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding"><img class="cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="title">Approximation Algorithms Week 2--Knapsack and Rounding</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">xxl</div><div class="author-info__description">study with me</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Xiaxlll"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#bin-packing-problem"><span class="toc-number">1.</span> <span class="toc-text">Bin packing problem</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#the-next-fit-algorithm"><span class="toc-number">1.1.</span> <span class="toc-text">The Next Fit algorithm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-linear-program-for-bin-packingfailed"><span class="toc-number">1.2.</span> <span class="toc-text">A Linear program for
+bin-packing（failed）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-special-case1small-things"><span class="toc-number">1.3.</span> <span class="toc-text">a special case1:small things</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-special-case2large-itemsfew-sizes"><span class="toc-number">1.4.</span> <span class="toc-text">a special case2:large
+items，few sizes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-special-case3large-items-many-distinct-sizesless-special"><span class="toc-number">1.5.</span> <span class="toc-text">a
+special case3:large items, many distinct sizes（less special）</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/a3fa5835.html" title="cpp学习笔记"><img src="/img/1284120.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cpp学习笔记"/></a><div class="content"><a class="title" href="/post/a3fa5835.html" title="cpp学习笔记">cpp学习笔记</a><time datetime="2023-01-19T22:54:11.000Z" title="发表于 2023-01-20 06:54:11">2023-01-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"/></a><div class="content"><a class="title" href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</a><time datetime="2023-01-08T18:27:29.000Z" title="发表于 2023-01-09 02:27:29">2023-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 2--Knapsack and Rounding"/></a><div class="content"><a class="title" href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding">Approximation Algorithms Week 2--Knapsack and Rounding</a><time datetime="2023-01-08T08:38:36.000Z" title="发表于 2023-01-08 16:38:36">2023-01-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"/></a><div class="content"><a class="title" href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng">Approximation Algorithms Week 1--Vertex cover and Linear Programmng</a><time datetime="2023-01-07T07:16:37.000Z" title="发表于 2023-01-07 15:16:37">2023-01-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c75b23f2.html" title="The bin-packing problem"><img src="/../images/The-bin-packing-problem/coverim.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="The bin-packing problem"/></a><div class="content"><a class="title" href="/post/c75b23f2.html" title="The bin-packing problem">The bin-packing problem</a><time datetime="2023-01-07T06:12:23.000Z" title="发表于 2023-01-07 14:12:23">2023-01-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By xxl</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Approximation Algorithms Week 2--Knapsack and Rounding | xxl's blog</title><meta name="author" content="xxl"><meta name="copyright" content="xxl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="课程来自Coursera The Knapsack Problem Problem Dedinition  \(𝑁\)件物品，每件物品有一个体积\({𝑠_𝑖}\)和价值\({v_i}\), 现在有一个容量是\(𝐵\)的背包，要选一些物品装进背包，使得价值之和最大。约定不会有体积超过背包容积的物体。 背包问题是\(NP-Hard\)问题  Naive greedy algorithmm  思">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Approximation Algorithms Week 2--Knapsack and Rounding">
+<meta property="og:url" content="http://example.com/post/4b0b12b.html">
+<meta property="og:site_name" content="xxl&#39;s blog">
+<meta property="og:description" content="课程来自Coursera The Knapsack Problem Problem Dedinition  \(𝑁\)件物品，每件物品有一个体积\({𝑠_𝑖}\)和价值\({v_i}\), 现在有一个容量是\(𝐵\)的背包，要选一些物品装进背包，使得价值之和最大。约定不会有体积超过背包容积的物体。 背包问题是\(NP-Hard\)问题  Naive greedy algorithmm  思">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png">
+<meta property="article:published_time" content="2023-01-08T08:38:36.000Z">
+<meta property="article:modified_time" content="2023-01-18T03:41:11.700Z">
+<meta property="article:author" content="xxl">
+<meta property="article:tag" content="近似算法">
+<meta property="article:tag" content="Knapsack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/4b0b12b"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Approximation Algorithms Week 2--Knapsack and Rounding',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-18 11:41:11'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/wallhaven-d5zmlm.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xxl's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Approximation Algorithms Week 2--Knapsack and Rounding</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-08T08:38:36.000Z" title="发表于 2023-01-08 16:38:36">2023-01-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-18T03:41:11.700Z" title="更新于 2023-01-18 11:41:11">2023-01-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/coursera/">coursera</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/coursera/Approximation-Algorithms-Part-I/">Approximation Algorithms Part I</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Approximation Algorithms Week 2--Knapsack and Rounding"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>课程来自<a
+target="_blank" rel="noopener" href="https://www.coursera.org/learn/approximation-algorithms-part-1/home/week/1">Coursera</a></p>
+<h1 id="the-knapsack-problem">The Knapsack Problem</h1>
+<h2 id="problem-dedinition">Problem Dedinition</h2>
+<ul>
+<li><span
+class="math inline">\(𝑁\)</span>件物品，每件物品有一个体积<span
+class="math inline">\({𝑠_𝑖}\)</span>和价值<span
+class="math inline">\({v_i}\)</span>, 现在有一个容量是<span
+class="math inline">\(𝐵\)</span>的背包，要选一些物品装进背包，使得价值之和最大。约定不会有体积超过背包容积的物体。</li>
+<li>背包问题是<span class="math inline">\(NP-Hard\)</span>问题</li>
+</ul>
+<h2 id="naive-greedy-algorithmm">Naive greedy algorithmm</h2>
+<ul>
+<li><strong>思想</strong>：由于希望总体积更小，总价值更大。计算每件物品的<span
+class="math inline">\(\frac{\mathbf{s}_{\mathbf{i}}}{\mathbf{v}_{\mathbf{i}}}\)</span>，从小到大排列依次放入背包。</li>
+<li><strong>评价</strong>：<img
+src="../images/Approximation-Algorithms-Week-2-Knapsack-and-Rounding/image-20230108172826038.png"
+alt="image-20230108172826038" /></li>
+</ul>
+<h2 id="special-case-1物品体积与价值相等">special case
+1：物品体积与价值相等</h2>
+<ul>
+<li><strong>a greedy algorithm</strong>
+<ul>
+<li><strong>思想</strong>：将物品按价值降序排列，依次放入背包。</li>
+<li><strong>近似比证明</strong>：该算法的近似比为2
+<ul>
+<li><em><span
+class="math inline">\(proof\)</span></em>：已知任意物品的体积都小于背包，则最终背包中至少包含一件物品。令最终放入背包的物品总体积为<span
+class="math inline">\(v\)</span>，第一件放不进背包的物品体积为<span
+class="math inline">\(v_i\)</span>，显然<span class="math inline">\(v +
+v_i \geq B\)</span>。又因为该算法事先将物品按体积降序排列，则<span
+class="math inline">\(v \geq v_i\)</span>，因此<span
+class="math inline">\(v \geq
+B/2\)</span>，有物品装不进的时候背包至少是半满的，即该算法的近似比为2。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2
+id="special-case-2在case1的基础上物品与背包体积较小且为整数因此此问题的动态规划算法是多项式时间的">special
+case
+2:在case1的基础上，物品与背包体积较小且为整数（因此此问题的动态规划算法是多项式时间的）</h2>
+<ul>
+<li><strong>Special dynamic
+program</strong>：由于物品价值都比较小，考虑动态规划。<span
+class="math inline">\(A[i,v]\)</span>表示<span
+class="math inline">\(i\)</span>项物品的子集的体积和是否可以达到<span
+class="math inline">\(v\)</span>。
+<ul>
+<li><img
+src="../images/Approximation-Algorithms-Week-2-Knapsack-and-Rounding/image-20230117055558615.png" /></li>
+<li><strong>analysis：</strong>
+<ul>
+<li>此问题的目标是使装入背包的物品的体积和<span
+class="math inline">\(v\)</span>最大，此时存在<span
+class="math inline">\(n\)</span>个物品的子集使得它们的体积和刚好达到<span
+class="math inline">\(v\)</span>，即<span
+class="math inline">\(A[n,v]\)</span>为<span
+class="math inline">\(true\)</span>。</li>
+<li><span class="math inline">\(v_1,v_2,...,v_n\)</span>分别为物品<span
+class="math inline">\(1,2,...,n\)</span>的体积，因为单个物品的体积总小于<span
+class="math inline">\(B\)</span>，所以<span
+class="math inline">\(A[1,v_1]\gets true\)</span>。</li>
+<li>当考虑是否将第<span
+class="math inline">\(i\)</span>件物品放入背包时，<span
+class="math inline">\(A[i,v](v&lt;v_i)=A[i-1,v]\)</span>，当<span
+class="math inline">\(v\geq v_i\)</span>时有两种情况：
+<ul>
+<li>（1）第<span
+class="math inline">\(i\)</span>件物品暂时不装入背包，<span
+class="math inline">\(A[i,v]=A[i-1,v]\)</span></li>
+<li>（2）第<span
+class="math inline">\(i\)</span>件物品暂时装入背包，<span
+class="math inline">\(A[i,v]=A[i-1,v-v_i]\)</span></li>
+</ul></li>
+<li>经过上步得到的<span class="math inline">\(\max\{v:A[i,v] \; is \;
+true \}\)</span>为从<span
+class="math inline">\(i\)</span>件物品中挑选物品放入背包时得到的最大体积和。因此当从<span
+class="math inline">\(n\)</span>件物品中挑选时，问题的解为<span
+class="math inline">\(\max\{v:A[n,v] \; is \; true \}\)</span>。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2
+id="special-case-3背包体积与物品的价值体积较小且为整数物品的价值vleq-n体积与价值不相等一个略普遍的例子">special
+case 3：背包体积与物品的价值体积较小且为整数，物品的价值<span
+class="math inline">\(v\leq
+N\)</span>，体积与价值不相等（一个略普遍的例子）</h2>
+<ul>
+<li><strong>dynamic program：</strong><span
+class="math inline">\(A[i,v]\)</span>表示<span
+class="math inline">\(i\)</span>项物品子集的价值和达到<span
+class="math inline">\(v\)</span>时的最小体积和。
+<ul>
+<li><img
+src="../images/Approximation-Algorithms-Week-2-Knapsack-and-Rounding/image-20230117073321175.png" /></li>
+<li><strong>算法复杂度：</strong><span
+class="math inline">\(O(n^{2}N)\)</span></li>
+</ul></li>
+</ul>
+<h2 id="approximation-algorithm-for-general-case大非整">Approximation
+Algorithm for general case(大，非整)</h2>
+<ul>
+<li><p><strong>general case：</strong>物品个数<span
+class="math inline">\(n\)</span>，背包的体积<span
+class="math inline">\(B\)</span></p></li>
+<li><p><strong>思想：</strong>scale(使每个物品<span
+class="math inline">\(i\)</span>的价值<span
+class="math inline">\(0&lt;v_i\leq N\)</span>) and
+round（使每个物品的体积为整数）</p>
+<p><img
+src="../images/Approximation-Algorithms-Week-2-Knapsack-and-Rounding/image-20230117225927429.png" /></p></li>
+<li><p><strong>算法：</strong></p>
+<ul>
+<li><strong>step1：</strong>丢弃体积大于<span
+class="math inline">\(B\)</span>的物品。</li>
+<li><strong>step2：</strong>令<span
+class="math inline">\(N=100n\)</span></li>
+<li><strong>step3：</strong>对每个物品的体积进行scaling和rounding，<span
+class="math inline">\(\mathbf{v}_{\mathbf{i}}^{\prime}
+\leftarrow\left\lfloor\mathbf{v}_{\mathbf{i}} \times
+\frac{\mathbf{N}}{\max _{\mathbf{j}}
+\mathbf{v}_{\mathbf{j}}}\right\rfloor\)</span></li>
+<li><strong>step4：</strong>对参数为<span
+class="math inline">\(B\)</span>,<span
+class="math inline">\((s_i,v_i&#39;)_i\)</span>的背包问题进行动态规划,得到的原问题的解</li>
+</ul></li>
+<li><p><strong>算法复杂度：</strong><span
+class="math inline">\(100*n^3\)</span></p></li>
+<li><p><strong>算法分析：</strong></p>
+<ul>
+<li><p><strong>notation：</strong></p>
+<ul>
+<li><span class="math inline">\(S\)</span> output
+items(scaled、rounded)</li>
+<li><span class="math inline">\(S^*\)</span> output
+items(scaled、unrounded)</li>
+<li><span class="math inline">\(\alpha=M/\max v_i\)</span> 放缩系数</li>
+</ul></li>
+<li><p><strong>定理：</strong>该算法得到的<span
+class="math inline">\(value\geq 0.99 OPT\)</span>，时间复杂度为<span
+class="math inline">\(O(poly(n))\)</span></p>
+<ul>
+<li><p><span class="math inline">\(proof\)</span>:</p>
+<ul>
+<li><p>由于<span class="math inline">\(S\)</span>相比<span
+class="math inline">\(S^*\)</span>经过了放缩（乘系数<span
+class="math inline">\(\alpha\)</span>并向下取整），<span
+class="math inline">\(S^*\)</span>是最优解，所以有<span
+class="math inline">\(\sum_{\mathbf{S}} \mathbf{v}_{\mathbf{i}}^{\prime}
+\geq \sum_{\mathbf{S}^*}
+\mathbf{v}_{\mathbf{i}}^{\prime}\)</span></p></li>
+<li><p>由放缩公式<span
+class="math inline">\(\mathbf{v}_{\mathbf{i}}^{\prime}
+\leftarrow\left\lfloor\mathbf{v}_{\mathbf{i}} \times
+\alpha\right\rfloor\)</span>知<span
+class="math inline">\(\mathbf{v}_{\mathbf{i}}^{\prime}&gt;\alpha
+\mathbf{v}_{\mathbf{i}}-\mathbf{1}\)</span>，因此<span
+class="math inline">\(\sum_{\mathbf{S}^*}
+\mathbf{v}_{\mathbf{i}}^{\prime}&gt;\alpha \sum_{\mathbf{S}^*}
+\mathbf{V}_{\mathbf{i}}-\mathbf{n}\)</span></p></li>
+<li><p>综上，</p></li>
+<li><p><span class="math display">\[
+\begin{aligned}\operatorname{Value}(\mathbf{S}) &amp; =\sum_{\mathbf{S}}
+\mathbf{v}_{\mathbf{i}} \\&amp; =\frac{1}{\alpha}
+\sum_{\mathbf{S}}\left(\alpha \mathbf{v}_{\mathbf{i}}\right) \\&amp;
+\geq \frac{1}{\alpha} \sum_{\mathbf{S}}
+\mathbf{v}_{\mathbf{i}}^{\prime}\\&amp; \geq \frac{\mathbf{1}}{\alpha}
+\sum_{\mathbf{S}^*} \mathbf{v}_{\mathbf{i}}^{\prime} \\&amp; \geq
+\frac{\mathbf{1}}{\alpha}\left[\alpha \sum_{\mathbf{S}^*}
+\mathbf{v}_{\mathbf{i}}-\mathbf{n}\right] \\&amp; =\mathbf{O P}
+\mathbf{T}-\frac{\mathbf{n}}{\alpha} \\&amp; =\mathbf{O P}
+\mathbf{T}-\frac{\mathbf{n} \times \max
+\mathbf{v}_{\mathbf{i}}}{\mathbf{N}}\end{aligned}
+\]</span></p></li>
+<li><p>又因为<span class="math inline">\(OPT\geq \max
+v_i\)</span></p></li>
+<li><p>代入得到 <span class="math inline">\(Value(\mathbf{S}) \geq
+\mathbf{O P} \mathbf{T}-\frac{\mathbf{n}}{\mathbf{N}} \mathbf{O P
+T}\)</span></p></li>
+<li><p>当<span class="math inline">\(\mathbf{N}=\mathbf{1 0 0} \times
+\mathbf{n}\)</span>时， <span class="math inline">\(Value(S) \geq .99
+\times\)</span> OPT</p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="knapsack问题的近似算法系统">knapsack问题的近似算法系统</h2>
+<ul>
+<li><strong>定理：</strong>在上述算法中令<span
+class="math inline">\(N=1000n\)</span>，得到的<span
+class="math inline">\(value\geq0.999OPT\)</span>，时间复杂度是多项式时间的。</li>
+<li><strong>knapsack的近似算法系统：</strong>对于任意<span
+class="math inline">\(\epsilon&gt;0\)</span>，可以利用近似算法得到满足<span
+class="math inline">\(\mid Value(Output)-OPT \mid \leq \epsilon \times
+\mathrm{OPT}\)</span>的解，<span
+class="math inline">\(\epsilon\)</span>越小，解越接近<span
+class="math inline">\(OPT\)</span>，运算时间变大.</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">xxl</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/post/4b0b12b.html">http://example.com/post/4b0b12b.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">xxl's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95/">近似算法</a><a class="post-meta__tags" href="/tags/Knapsack/">Knapsack</a></div><div class="post_share"><div class="social-share" data-image="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/b4667801.html"><img class="prev-cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</div></div></a></div><div class="next-post pull-right"><a href="/post/d8762d8c.html"><img class="next-cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Approximation Algorithms Week 1--Vertex cover and Linear Programmng</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/c75b23f2.html" title="The bin-packing problem"><img class="cover" src="/../images/The-bin-packing-problem/coverim.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-07</div><div class="title">The bin-packing problem</div></div></a></div><div><a href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"><img class="cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-07</div><div class="title">Approximation Algorithms Week 1--Vertex cover and Linear Programmng</div></div></a></div><div><a href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"><img class="cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-09</div><div class="title">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">xxl</div><div class="author-info__description">study with me</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Xiaxlll"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#the-knapsack-problem"><span class="toc-number">1.</span> <span class="toc-text">The Knapsack Problem</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#problem-dedinition"><span class="toc-number">1.1.</span> <span class="toc-text">Problem Dedinition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#naive-greedy-algorithmm"><span class="toc-number">1.2.</span> <span class="toc-text">Naive greedy algorithmm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#special-case-1%E7%89%A9%E5%93%81%E4%BD%93%E7%A7%AF%E4%B8%8E%E4%BB%B7%E5%80%BC%E7%9B%B8%E7%AD%89"><span class="toc-number">1.3.</span> <span class="toc-text">special case
+1：物品体积与价值相等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#special-case-2%E5%9C%A8case1%E7%9A%84%E5%9F%BA%E7%A1%80%E4%B8%8A%E7%89%A9%E5%93%81%E4%B8%8E%E8%83%8C%E5%8C%85%E4%BD%93%E7%A7%AF%E8%BE%83%E5%B0%8F%E4%B8%94%E4%B8%BA%E6%95%B4%E6%95%B0%E5%9B%A0%E6%AD%A4%E6%AD%A4%E9%97%AE%E9%A2%98%E7%9A%84%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E6%98%AF%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%97%B6%E9%97%B4%E7%9A%84"><span class="toc-number">1.4.</span> <span class="toc-text">special
+case
+2:在case1的基础上，物品与背包体积较小且为整数（因此此问题的动态规划算法是多项式时间的）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#special-case-3%E8%83%8C%E5%8C%85%E4%BD%93%E7%A7%AF%E4%B8%8E%E7%89%A9%E5%93%81%E7%9A%84%E4%BB%B7%E5%80%BC%E4%BD%93%E7%A7%AF%E8%BE%83%E5%B0%8F%E4%B8%94%E4%B8%BA%E6%95%B4%E6%95%B0%E7%89%A9%E5%93%81%E7%9A%84%E4%BB%B7%E5%80%BCvleq-n%E4%BD%93%E7%A7%AF%E4%B8%8E%E4%BB%B7%E5%80%BC%E4%B8%8D%E7%9B%B8%E7%AD%89%E4%B8%80%E4%B8%AA%E7%95%A5%E6%99%AE%E9%81%8D%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">1.5.</span> <span class="toc-text">special
+case 3：背包体积与物品的价值体积较小且为整数，物品的价值\(v\leq
+N\)，体积与价值不相等（一个略普遍的例子）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#approximation-algorithm-for-general-case%E5%A4%A7%E9%9D%9E%E6%95%B4"><span class="toc-number">1.6.</span> <span class="toc-text">Approximation
+Algorithm for general case(大，非整)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#knapsack%E9%97%AE%E9%A2%98%E7%9A%84%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.7.</span> <span class="toc-text">knapsack问题的近似算法系统</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/a3fa5835.html" title="cpp学习笔记"><img src="/img/1284120.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cpp学习笔记"/></a><div class="content"><a class="title" href="/post/a3fa5835.html" title="cpp学习笔记">cpp学习笔记</a><time datetime="2023-01-19T22:54:11.000Z" title="发表于 2023-01-20 06:54:11">2023-01-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"/></a><div class="content"><a class="title" href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</a><time datetime="2023-01-08T18:27:29.000Z" title="发表于 2023-01-09 02:27:29">2023-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 2--Knapsack and Rounding"/></a><div class="content"><a class="title" href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding">Approximation Algorithms Week 2--Knapsack and Rounding</a><time datetime="2023-01-08T08:38:36.000Z" title="发表于 2023-01-08 16:38:36">2023-01-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"/></a><div class="content"><a class="title" href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng">Approximation Algorithms Week 1--Vertex cover and Linear Programmng</a><time datetime="2023-01-07T07:16:37.000Z" title="发表于 2023-01-07 15:16:37">2023-01-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c75b23f2.html" title="The bin-packing problem"><img src="/../images/The-bin-packing-problem/coverim.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="The bin-packing problem"/></a><div class="content"><a class="title" href="/post/c75b23f2.html" title="The bin-packing problem">The bin-packing problem</a><time datetime="2023-01-07T06:12:23.000Z" title="发表于 2023-01-07 14:12:23">2023-01-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By xxl</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

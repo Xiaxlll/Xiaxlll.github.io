@@ -1,0 +1,331 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>cpp学习笔记 | xxl's blog</title><meta name="author" content="xxl"><meta name="copyright" content="xxl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第一部分 C++基础知识 先来运行一下第一个程序！我使用的是macOS版本的vs code，如果操作系统是Windows的话visual studio更方便一些！ 123456789101112#include&lt;iostream&gt;using namespace std;int main() &amp;#123;	cout &lt;&lt; &quot;Hello c++&quot; &lt;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp学习笔记">
+<meta property="og:url" content="http://example.com/post/a3fa5835.html">
+<meta property="og:site_name" content="xxl&#39;s blog">
+<meta property="og:description" content="第一部分 C++基础知识 先来运行一下第一个程序！我使用的是macOS版本的vs code，如果操作系统是Windows的话visual studio更方便一些！ 123456789101112#include&lt;iostream&gt;using namespace std;int main() &amp;#123;	cout &lt;&lt; &quot;Hello c++&quot; &lt;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/1284120.jpg">
+<meta property="article:published_time" content="2023-01-19T22:54:11.000Z">
+<meta property="article:modified_time" content="2023-02-13T05:06:03.758Z">
+<meta property="article:author" content="xxl">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="c++入门">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/1284120.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/a3fa5835"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'cpp学习笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-13 13:06:03'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/1284120.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xxl's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">cpp学习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-19T22:54:11.000Z" title="发表于 2023-01-20 06:54:11">2023-01-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-13T05:06:03.758Z" title="更新于 2023-02-13 13:06:03">2023-02-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B/c/">c++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="cpp学习笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="第一部分-c基础知识">第一部分 C++基础知识</h1>
+<p>先来运行一下第一个程序！我使用的是macOS版本的vs
+code，如果操作系统是Windows的话visual studio更方便一些！</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;Hello c++&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//macos中没有这个命令,注释就可以</span></span><br><span class="line">	<span class="comment">//system(&quot;pause&quot;);</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="和c相同的一些知识mark一下">和c相同的一些知识，mark一下</h2>
+<h3 id="注释">注释</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//单行注释</span></span><br><span class="line"><span class="comment">/*多行注释*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="变量">变量</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//变量声明&amp;输出</span></span><br><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;a = &quot;</span> &lt;&lt; a &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<h3 id="常量">常量</h3>
+<p><strong>作用</strong>：用于记录程序中不可更改的数据</p>
+<p>C++定义常量两种方式</p>
+<ol type="1">
+<li><strong>#define</strong> 宏常量： <code>#define 常量名 常量值</code>
+<ul>
+<li>==通常在文件上方定义==，表示一个常量</li>
+</ul></li>
+<li><strong>const</strong>修饰的变量
+<code>const 数据类型 常量名 = 常量值</code>
+<ul>
+<li>==通常在变量定义前加关键字const==，修饰该变量为常量，不可修改</li>
+</ul></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//宏常量(注意：不可修改)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DAY 7</span></span><br><span class="line"><span class="comment">//常量示范</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;一天有&quot;</span> &lt;&lt; DAY &lt;&lt; <span class="string">&quot;天&quot;</span> &lt;&lt;endl;</span><br><span class="line"><span class="comment">//const修饰的变量</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> month = <span class="number">12</span>;</span><br><span class="line"><span class="comment">//常量示范</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;一年有&quot;</span> &lt;&lt; month &lt;&lt; <span class="string">&quot;月&quot;</span> &lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+<h3 id="关键字">关键字</h3>
+<p><strong>作用：</strong>关键字是C++中预先保留的单词（标识符）</p>
+<p><img
+src="../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230120075301424.png" /></p>
+<h3 id="标识符命名">标识符命名</h3>
+<p>不可以是关键字，只能由字母、数字、下划线组成，第一个字符必须为字母或下划线，字母区分大小写。</p>
+<h3 id="数据类型">数据类型</h3>
+<ul>
+<li><p><strong>整型</strong><img
+src="../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230120081159488.png" /></p></li>
+<li><p><strong>sizeof</strong></p></li>
+<li><p>~~~c++ //sizeof() //短整型short(2) short num1 = 10; cout &lt;&lt;
+"short占用的内存" &lt;&lt; sizeof(num1) &lt;&lt; endl; //int(4) cout
+&lt;&lt; "int 类型所占内存空间为： " &lt;&lt; sizeof(int) &lt;&lt; endl;
+//long(4) cout &lt;&lt; "long 类型所占内存空间为： " &lt;&lt;
+sizeof(long) &lt;&lt; endl; //long long(8) cout &lt;&lt; "long long
+类型所占内存空间为： " &lt;&lt; sizeof(long long) &lt;&lt; endl;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* **实型（浮点型）**![](../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230121051858127.png)</span><br><span class="line"></span><br><span class="line">* ~~~c++</span><br><span class="line">  //单精度float(4)</span><br><span class="line">  float f1 = 3.14f;</span><br><span class="line">  //双精度double（8）</span><br><span class="line">  double d1 = 3.14;</span><br><span class="line">  cout &lt;&lt; &quot;float  sizeof = &quot; &lt;&lt; sizeof(f1) &lt;&lt; endl;</span><br><span class="line">  cout &lt;&lt; &quot;double sizeof = &quot; &lt;&lt; sizeof(d1) &lt;&lt; endl;</span><br></pre></td></tr></table></figure></p></li>
+<li><p><strong>科学计数法</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//科学计数法</span></span><br><span class="line"><span class="type">float</span> f2 = <span class="number">3e2</span>; <span class="comment">// 3 * 10 ^ 2 </span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;f2 = &quot;</span> &lt;&lt; f2 &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> f3 = <span class="number">3e-2</span>;  <span class="comment">// 3 * 0.1 ^ 2</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;f3 = &quot;</span> &lt;&lt; f3 &lt;&lt; endl;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>字符型</strong>（单个字符）</p></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//字符型char(1)</span></span><br><span class="line"><span class="type">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="built_in">sizeof</span>(<span class="type">char</span>) &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">//ch = &quot;abcde&quot;; //错误，不可以用双引号</span></span><br><span class="line"><span class="comment">//ch = &#x27;abcde&#x27;; //错误，单引号内只能引用一个字符</span></span><br><span class="line"></span><br><span class="line">cout &lt;&lt; (<span class="type">int</span>)ch &lt;&lt; endl;  <span class="comment">//查看字符a对应的ASCII码</span></span><br><span class="line">ch = <span class="number">97</span>; <span class="comment">//可以直接用ASCII给字符型变量赋值</span></span><br><span class="line">cout &lt;&lt; ch &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>转义字符</strong></li>
+</ul>
+<p><img
+src="../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230121055248753.png" /></p>
+<ul>
+<li><p><strong>字符串类型</strong></p>
+<ul>
+<li><p>C语言风格<code>char 变量名[] = "字符串值"</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//字符串（风格1）</span></span><br><span class="line"><span class="type">char</span> str1[] = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line">cout &lt;&lt; str1 &lt;&lt; endl;</span><br><span class="line"><span class="comment">//C风格的字符串要用双引号括起来</span></span><br></pre></td></tr></table></figure></li>
+<li><p>C++风格<code>string 变量名 = "字符串值"</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//字符串（风格2）</span></span><br><span class="line">string str = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line">cout &lt;&lt; str &lt;&lt; endl;</span><br><span class="line"><span class="comment">//C++风格字符串，需要加入头文件#include&lt;string&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p><strong>布尔类型</strong>（true1 false0）</p></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//布尔型变量</span></span><br><span class="line"><span class="type">bool</span> flag = <span class="literal">true</span>;</span><br><span class="line">cout &lt;&lt; flag &lt;&lt; endl; <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">flag = <span class="literal">false</span>;</span><br><span class="line">cout &lt;&lt; flag &lt;&lt; endl; <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;size of bool = &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(<span class="type">bool</span>) &lt;&lt; endl; <span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>数据输入</strong><code>cin &gt;&gt; 变量</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//输入整型</span></span><br><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;输入a&quot;</span> &lt;&lt; endl;</span><br><span class="line">cin &gt;&gt; a;</span><br><span class="line">cout &lt;&lt; a &lt;&lt; endl;</span><br><span class="line"><span class="comment">//浮点型输入</span></span><br><span class="line"><span class="type">double</span> d = <span class="number">0</span>;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;请输入浮点型变量：&quot;</span> &lt;&lt; endl;</span><br><span class="line">cin &gt;&gt; d;</span><br><span class="line">cout &lt;&lt; d &lt;&lt; endl;</span><br><span class="line"><span class="comment">//字符型输入</span></span><br><span class="line"><span class="type">char</span> ch = <span class="number">0</span>;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;请输入字符型变量：&quot;</span> &lt;&lt; endl;</span><br><span class="line">cin &gt;&gt; ch;</span><br><span class="line">cout &lt;&lt; ch &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">//字符串型输入</span></span><br><span class="line">string str;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;请输入字符串型变量：&quot;</span> &lt;&lt; endl;</span><br><span class="line">cin &gt;&gt; str;</span><br><span class="line">cout &lt;&lt; str &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">//布尔类型输入</span></span><br><span class="line"><span class="type">bool</span> flag = <span class="literal">true</span>;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;请输入布尔型变量：&quot;</span> &lt;&lt; endl;</span><br><span class="line">cin &gt;&gt; flag;</span><br><span class="line">cout &lt;&lt; flag &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<h3 id="运算符">运算符</h3>
+<p><img
+src="../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230121070507951.png" /></p>
+<ul>
+<li>算术运算符</li>
+</ul>
+<p><img
+src="../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230121072519507.png" /></p>
+<ul>
+<li>赋值运算符</li>
+</ul>
+<p><img
+src="../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230121072607892.png" /></p>
+<ul>
+<li>比较运算符</li>
+</ul>
+<p><img
+src="../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230121072649204.png" /></p>
+<ul>
+<li>逻辑运算符</li>
+</ul>
+<p><img
+src="../images/cpp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230121072728402.png" /></p>
+<h3 id="程序逻辑控制">程序逻辑控制</h3>
+<h4 id="选择结构">选择结构</h4>
+<ul>
+<li><p><strong>if条件表达式</strong></p></li>
+<li><p><strong>三目运算符</strong><code>表达式1 ? 表达式2 ：表达式3</code></p></li>
+<li><p><strong>switch语句</strong></p></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(表达式)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> 结果<span class="number">1</span>：执行语句;<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> 结果<span class="number">2</span>：执行语句;<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="keyword">default</span>:执行语句;<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="循环结构">循环结构</h4>
+<ul>
+<li><strong>while循环语句</strong></li>
+<li><strong>do...while循环语句</strong></li>
+<li><strong>for循环语句</strong></li>
+</ul>
+<h4 id="跳转语句">跳转语句</h4>
+<ul>
+<li><strong>break语句</strong></li>
+<li><strong>continue语句</strong></li>
+<li><strong>goto语句</strong>（无条件跳转到标记位置）</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;1&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">goto</span> FLAG;</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;2&quot;</span> &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;3&quot;</span> &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;4&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	FLAG:</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;5&quot;</span> &lt;&lt; endl;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3
+id="数组集合内元素同类型连续存放">数组（集合内元素同类型，连续存放）</h3>
+<h4 id="一维数组">一维数组</h4>
+<ul>
+<li><strong>定义方法</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数据类型 数组名[ 数组长度 ];</span></span><br><span class="line"><span class="comment">//数据类型 数组名[ 数组长度 ] = &#123; 值1，值2 ...&#125;;</span></span><br><span class="line"><span class="comment">//数据类型 数组名[ ] = &#123; 值1，值2 ...&#125;;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>数组的地址</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数组名用途</span></span><br><span class="line"><span class="comment">//1、可以获取整个数组占用内存空间大小</span></span><br><span class="line"><span class="type">int</span> arr[<span class="number">10</span>] = &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span> &#125;;</span><br><span class="line"></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;整个数组所占内存空间为： &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(arr) &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;每个元素所占内存空间为： &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(arr[<span class="number">0</span>]) &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;数组的元素个数为： &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(arr) / <span class="built_in">sizeof</span>(arr[<span class="number">0</span>]) &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">//2、可以通过数组名获取到数组首地址</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;数组首地址为： &quot;</span> &lt;&lt; (<span class="type">int</span>)(<span class="type">size_t</span>)arr &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;数组中第一个元素地址为： &quot;</span> &lt;&lt; (<span class="type">int</span>)(<span class="type">size_t</span>)&amp;arr[<span class="number">0</span>] &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;数组中第二个元素地址为： &quot;</span> &lt;&lt; (<span class="type">int</span>)(<span class="type">size_t</span>)&amp;arr[<span class="number">1</span>] &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>数组的排序（冒泡排序）</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//示例：将数组进行升序排序</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">9</span>] = &#123; <span class="number">4</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">0</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">9</span> &#125;;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">9</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;<span class="number">9</span>-i<span class="number">-1</span>;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[j]&gt;arr[j+<span class="number">1</span>])&#123;</span><br><span class="line">                temp = arr[j+<span class="number">1</span>];</span><br><span class="line">                arr[j+<span class="number">1</span>] = arr[j];</span><br><span class="line">                arr[j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">9</span>;i++)&#123;</span><br><span class="line">        cout &lt;&lt; arr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="二维数组">二维数组</h4>
+<ul>
+<li><strong>定义</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数据类型 数组名[ 行数 ][ 列数 ];</span></span><br><span class="line"><span class="comment">//数据类型 数组名[ 行数 ][ 列数 ] = &#123; &#123;数据1，数据2 &#125; ，&#123;数据3，数据4 &#125; &#125;;</span></span><br><span class="line"><span class="comment">//数据类型 数组名[ 行数 ][ 列数 ] = &#123; 数据1，数据2，数据3，数据4&#125;;</span></span><br><span class="line"><span class="comment">//数据类型 数组名[ ][ 列数 ] = &#123; 数据1，数据2，数据3，数据4&#125;;</span></span><br></pre></td></tr></table></figure>
+<p>注意：后两种可以一下赋所有元素，然后计算机根据行列数进行判断</p>
+<ul>
+<li><strong>地址</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组大小： &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(arr) &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组一行大小： &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(arr[<span class="number">0</span>]) &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组元素大小： &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(arr[<span class="number">0</span>][<span class="number">0</span>]) &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组行数： &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(arr) / <span class="built_in">sizeof</span>(arr[<span class="number">0</span>]) &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组列数： &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(arr[<span class="number">0</span>]) / <span class="built_in">sizeof</span>(arr[<span class="number">0</span>][<span class="number">0</span>]) &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">//地址</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组首地址：&quot;</span> &lt;&lt; arr &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组第一行地址：&quot;</span> &lt;&lt; arr[<span class="number">0</span>] &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组第二行地址：&quot;</span> &lt;&lt; arr[<span class="number">1</span>] &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组第一个元素地址：&quot;</span> &lt;&lt; &amp;arr[<span class="number">0</span>][<span class="number">0</span>] &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;二维数组第二个元素地址：&quot;</span> &lt;&lt; &amp;arr[<span class="number">0</span>][<span class="number">1</span>] &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<h3 id="函数">函数</h3>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">xxl</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/post/a3fa5835.html">http://example.com/post/a3fa5835.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">xxl's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/c-%E5%85%A5%E9%97%A8/">c++入门</a></div><div class="post_share"><div class="social-share" data-image="/img/1284120.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/b4667801.html"><img class="next-cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/6cb5a254.html" title="java学习笔记"><img class="cover" src="/../images/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-06</div><div class="title">java学习笔记</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">xxl</div><div class="author-info__description">study with me</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Xiaxlll"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-c%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">第一部分 C++基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%92%8Cc%E7%9B%B8%E5%90%8C%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86mark%E4%B8%80%E4%B8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">和c相同的一些知识，mark一下</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A"><span class="toc-number">1.1.1.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-number">1.1.2.</span> <span class="toc-text">变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F"><span class="toc-number">1.1.3.</span> <span class="toc-text">常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.1.4.</span> <span class="toc-text">关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6%E5%91%BD%E5%90%8D"><span class="toc-number">1.1.5.</span> <span class="toc-text">标识符命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.6.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.1.7.</span> <span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E6%8E%A7%E5%88%B6"><span class="toc-number">1.1.8.</span> <span class="toc-text">程序逻辑控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.8.1.</span> <span class="toc-text">选择结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.8.2.</span> <span class="toc-text">循环结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%B3%E8%BD%AC%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.1.8.3.</span> <span class="toc-text">跳转语句</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E9%9B%86%E5%90%88%E5%86%85%E5%85%83%E7%B4%A0%E5%90%8C%E7%B1%BB%E5%9E%8B%E8%BF%9E%E7%BB%AD%E5%AD%98%E6%94%BE"><span class="toc-number">1.1.9.</span> <span class="toc-text">数组（集合内元素同类型，连续存放）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-number">1.1.9.1.</span> <span class="toc-text">一维数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-number">1.1.9.2.</span> <span class="toc-text">二维数组</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.10.</span> <span class="toc-text">函数</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/a3fa5835.html" title="cpp学习笔记"><img src="/img/1284120.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cpp学习笔记"/></a><div class="content"><a class="title" href="/post/a3fa5835.html" title="cpp学习笔记">cpp学习笔记</a><time datetime="2023-01-19T22:54:11.000Z" title="发表于 2023-01-20 06:54:11">2023-01-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"/></a><div class="content"><a class="title" href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</a><time datetime="2023-01-08T18:27:29.000Z" title="发表于 2023-01-09 02:27:29">2023-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 2--Knapsack and Rounding"/></a><div class="content"><a class="title" href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding">Approximation Algorithms Week 2--Knapsack and Rounding</a><time datetime="2023-01-08T08:38:36.000Z" title="发表于 2023-01-08 16:38:36">2023-01-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"/></a><div class="content"><a class="title" href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng">Approximation Algorithms Week 1--Vertex cover and Linear Programmng</a><time datetime="2023-01-07T07:16:37.000Z" title="发表于 2023-01-07 15:16:37">2023-01-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c75b23f2.html" title="The bin-packing problem"><img src="/../images/The-bin-packing-problem/coverim.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="The bin-packing problem"/></a><div class="content"><a class="title" href="/post/c75b23f2.html" title="The bin-packing problem">The bin-packing problem</a><time datetime="2023-01-07T06:12:23.000Z" title="发表于 2023-01-07 14:12:23">2023-01-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By xxl</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
