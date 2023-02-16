@@ -1,0 +1,1067 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>An introduction to approximation algorithms | xxl's blog</title><meta name="author" content="xxl"><meta name="copyright" content="xxl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节取自《The Design of Approximation-Algorithms》第一章，介绍了近似算法的一些基本定义并以\(set \quad cover\) 问题为例，使用了一些常用的技巧来设计近似算法。 专业名词  discrete optimization：离散优化  应用于安排课程、计划运输路线等一系列\(NP-hard\)问题（没有多项式时间的解） 解决\(NP-hard\)问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="An introduction to approximation algorithms">
+<meta property="og:url" content="http://example.com/post/e0de8bd7.html">
+<meta property="og:site_name" content="xxl&#39;s blog">
+<meta property="og:description" content="本节取自《The Design of Approximation-Algorithms》第一章，介绍了近似算法的一些基本定义并以\(set \quad cover\) 问题为例，使用了一些常用的技巧来设计近似算法。 专业名词  discrete optimization：离散优化  应用于安排课程、计划运输路线等一系列\(NP-hard\)问题（没有多项式时间的解） 解决\(NP-hard\)问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/The-bin-packing-problem/coverim.jpeg">
+<meta property="article:published_time" content="2023-02-13T05:28:31.000Z">
+<meta property="article:modified_time" content="2023-02-16T11:40:41.704Z">
+<meta property="article:author" content="xxl">
+<meta property="article:tag" content="近似算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/The-bin-packing-problem/coverim.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/e0de8bd7"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'An introduction to approximation algorithms',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-16 19:40:41'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/../images/The-bin-packing-problem/wallhaven-zygeko.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xxl's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">An introduction to approximation algorithms</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-13T05:28:31.000Z" title="发表于 2023-02-13 13:28:31">2023-02-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-16T11:40:41.704Z" title="更新于 2023-02-16 19:40:41">2023-02-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BF%90%E7%AD%B9/">运筹</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BF%90%E7%AD%B9/%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95/">近似算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="An introduction to approximation algorithms"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>本节取自《The Design of
+Approximation-Algorithms》第一章，介绍了近似算法的一些基本定义并以<span
+class="math inline">\(set \quad cover\)</span>
+问题为例，使用了一些常用的技巧来设计近似算法。</p>
+<h1 id="专业名词">专业名词</h1>
+<ul>
+<li><p><strong>discrete optimization：离散优化</strong></p>
+<ul>
+<li>应用于安排课程、计划运输路线等一系列<span
+class="math inline">\(NP-hard\)</span>问题（没有多项式时间的解）</li>
+<li>解决<span class="math inline">\(NP-hard\)</span>问题的方法：
+<ol type="1">
+<li>限制算法是多项式时间的</li>
+<li>放弃寻找最优解，而是去寻找足够好的解。</li>
+<li>对于现实中复杂的问题，研究其理想化的版本。如模拟退火算法（simulated
+annealing）、遗传算法（genetic algorithms）、禁忌搜索（tabu
+search）</li>
+</ol></li>
+</ul></li>
+<li><p><strong>heuristics and
+metaheuristics：启发式和元启发式</strong></p>
+<ul>
+<li><p><strong>启发式算法</strong></p>
+<p>一个基于直观或经验构造的算法，在可接受的花费（指计算时间和空间）下给出待解决组合优化问题每一个实例的一个可行解，该可行解与最优解的偏离程度一般不能被预计。</p></li>
+<li><p><strong>元启发式算法</strong></p>
+<p>一类通用型的启发式算法，这类算法的优化机理不过分依赖于算法的组织结构信息，可以广泛的应用到函数的组合优化和函数计算中</p></li>
+<li><p><strong>近似算法和启发式算法的区别</strong></p>
+<p>近似算法通常能得到一个有质量保证的解。启发式算法通常可在传统解决问题的经验中找到寻求一种面向问题的策略，之后用这种策略来在可行时间内寻找一个相对比较好的解，但对解的质量没有保证。</p></li>
+</ul></li>
+</ul>
+<h1 id="p问题np问题npc问题">P问题、NP问题、NPC问题</h1>
+<ul>
+<li><p><strong>多项式时间</strong>（polynomial
+time）：可用多项式表示的时间复杂度，如<span
+class="math inline">\(O(1)\)</span>、<span class="math inline">\(O(\log
+N)\)</span>、<span class="math inline">\(O(N^2)\)</span></p></li>
+<li><p><strong>约化</strong>(Reducibility)：问题<span
+class="math inline">\(A\)</span>可以约化为问题<span
+class="math inline">\(B\)</span>，即用问题<span
+class="math inline">\(B\)</span>的方法解决问题<span
+class="math inline">\(A\)</span>，此约化是多项式的。例：用求解一元一次方程的方法约化为求解一元二次方程的方法。</p></li>
+<li><p><strong><span
+class="math inline">\(P\)</span>问题</strong>：一类可在多项式时间内解决的问题的集合。</p></li>
+<li><p><strong><span
+class="math inline">\(NP\)</span>问题</strong>：一类问题，此类问题可在多项式时间内验证。</p></li>
+<li><p><strong><span
+class="math inline">\(NP-Complete\)</span>问题</strong>：一类问题<span
+class="math inline">\(X\)</span>，任意<span
+class="math inline">\(NP\)</span>问题<span
+class="math inline">\(Y\)</span>都可以在多项式式时间内约化为问题<span
+class="math inline">\(X\)</span>。</p>
+<ul>
+<li><p><strong>证明一个问题是<span
+class="math inline">\(NPC\)</span>问题：</strong></p>
+<ol type="1">
+<li>此问题为<span class="math inline">\(NP\)</span>问题</li>
+<li>一个已知的<span
+class="math inline">\(NPC\)</span>问题可以约化为此问题</li>
+</ol></li>
+<li><p><strong>Pick all the correct statements.If a problem <span
+class="math inline">\(H\)</span> is <span
+class="math inline">\(NP-Complete\)</span>, then...</strong></p>
+<p>☑For any problem <span class="math inline">\(L\)</span> in <span
+class="math inline">\(NP\)</span>, there is a polynomial-time reduction
+from <span class="math inline">\(L\)</span> to <span
+class="math inline">\(H\)</span>.</p>
+<p>☑For any problem <span class="math inline">\(L\)</span> in <span
+class="math inline">\(P\)</span>, there is a polynomial-time reduction
+from <span class="math inline">\(L\)</span> to <span
+class="math inline">\(H\)</span>.</p>
+<p>☐<span class="math inline">\(H\)</span> belongs to the class <span
+class="math inline">\(P\)</span>.</p>
+<p>☑<span class="math inline">\(H\)</span> belongs to the class <span
+class="math inline">\(NP\)</span>.</p>
+<p>☑If there exists a polynomial-time algorithm for the Hamiltonian path
+problem then there exists a polynomial-time algorithm for <span
+class="math inline">\(H\)</span>.</p>
+<p>☑An output to problem H is either "yes" or "no".</p>
+<p>☑If there exists a polynomial-time algorithm for H then there exists
+a polynomial-time algorithm for the Hamiltonian path problem.</p></li>
+</ul></li>
+<li><p><strong><span
+class="math inline">\(NP-Hard\)</span>问题</strong>：一类问题所组成的集合，此类问题的范围比<span
+class="math inline">\(NPC\)</span>问题广，不一定为决策问题，不包含于<span
+class="math inline">\(NP\)</span>问题。任何<span
+class="math inline">\(NPC\)</span>问题可在多项式时间内约化为<span
+class="math inline">\(NP-Hard\)</span>问题。</p>
+<ul>
+<li><p><strong>Pick all the correct statements.If a problem <span
+class="math inline">\(H\)</span> is <span
+class="math inline">\(NP-Hard\)</span>, then...</strong></p>
+<p>☑For any problem <span class="math inline">\(L\)</span> in <span
+class="math inline">\(P\)</span>, there is a polynomial-time reduction
+from <span class="math inline">\(L\)</span> to <span
+class="math inline">\(H\)</span>.</p>
+<p>☐<span class="math inline">\(H\)</span> belongs to the class <span
+class="math inline">\(P\)</span>.</p>
+<p>☐<span class="math inline">\(H\)</span> belongs to the class <span
+class="math inline">\(NP\)</span>.</p>
+<p>☑If there exists a polynomial-time algorithm for <span
+class="math inline">\(H\)</span> then there exists a polynomial-time
+algorithm for the Hamiltonian path problem.</p>
+<p>☐If there exists a polynomial-time algorithm for the Hamiltonian path
+problem then there exists a polynomial-time algorithm for <span
+class="math inline">\(H\)</span>.</p>
+<p>☐An output to problem <span class="math inline">\(H\)</span> is "yes"
+or "no".</p>
+<p>☑For any problem <span class="math inline">\(L\)</span> in <span
+class="math inline">\(NP\)</span>, there is a polynomial-time reduction
+from <span class="math inline">\(L\)</span> to <span
+class="math inline">\(H\)</span>.</p></li>
+</ul></li>
+</ul>
+<p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230107212557061.png" /></p>
+<p>[<img
+src="../images/An-introduction-to-approximation-algorithms/u=2541031885,1494691757&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG.jpeg" /></p>
+<h1 id="近似算法">近似算法</h1>
+<h2 id="定义">定义</h2>
+<p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230213143453547.png" /></p>
+<ul>
+<li>性能保证（performance guarantee）/近似比（approximation
+ratio）/近似因子（approximation factor）：<span
+class="math inline">\(\alpha\)</span>
+<ul>
+<li>对于最大化问题：<span
+class="math inline">\(\alpha&lt;1\)</span></li>
+<li>对于最小化问题：<span
+class="math inline">\(\alpha&gt;1\)</span></li>
+</ul></li>
+<li>Ex:一个最大化问题的<span class="math inline">\(1/2-approximation
+\quad algorithm\)</span>
+<ul>
+<li>此算法的输出值<span class="math inline">\(S\geq
+(1/2)S^*\)</span></li>
+</ul></li>
+</ul>
+<h2 id="近似算法的意义">近似算法的意义</h2>
+<ul>
+<li>近似算法可用于不需要得到最优解的<span
+class="math inline">\(NP-hard\)</span>问题</li>
+<li>近似算法关注于理想化的模型，通过定理的证明可以对问题结构更深刻的思考，可以启发人们设计出解决实际问题的启发式算法</li>
+<li>启发式和元启发式算法是通过经验设计出来的，近似算法有严谨的数学证明</li>
+<li>可以通过近似算法来度量不同优化问题的难易程度</li>
+</ul>
+<h2 id="ptas">PTAS</h2>
+<p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230213203456983.png" /></p>
+<h2 id="max-snp-hard-problem">MAX SNP-hard problem</h2>
+<p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230213204018687.png" /></p>
+<h1 id="the-set-cover-problem">the set cover problem</h1>
+<ul>
+<li><p><strong>Definition</strong></p>
+<ul>
+<li><p><strong>Input:</strong></p>
+<p>集合<span class="math inline">\(E=\left\{e_1, \ldots,
+e_n\right\}\)</span></p>
+<p><span class="math inline">\(S_1, S_2, \ldots, S_m\)</span>，<span
+class="math inline">\(each \quad S_j \subseteq E\)</span></p>
+<p>权重<span class="math inline">\(w_j \geq 0\)</span>，<span
+class="math inline">\(for \quad each \quad S_j\)</span></p></li>
+<li><p><strong>Goal:</strong>找到一个权重最小的覆盖子集，即寻找一个满足<span
+class="math inline">\(\bigcup_{j \in I} S_j=E\)</span>的子集<span
+class="math inline">\(I \subseteq\{1, \ldots, m\}\)</span>使得<span
+class="math inline">\(\sum_{j \in I} w_j\)</span>最小。</p></li>
+<li><p><strong>special case：</strong>当<span
+class="math inline">\(w_j=1\)</span>时，称为unweighted set cover
+problem.</p></li>
+</ul></li>
+<li><p><strong>问题的推广：vertex cover problem</strong></p></li>
+<li><p><strong>问题的整数规划形式：</strong> <span
+class="math display">\[
+\begin{aligned}
+&amp; \operatorname{minimize} \sum_{j=1}^m w_j x_j \\
+&amp; \text { subject to } \sum_{j: e_i \in S_j} x_j \geq 1, \quad \\
+&amp; x_j \in\{0,1\}, \quad j=1, \ldots, n,
+\end{aligned}
+\]</span></p>
+<ul>
+<li>整数规划最优解对应的目标值：<span class="math inline">\(Z_{I
+P}^*\)</span>，<span class="math inline">\(Z_{I
+P}^*=\mathrm{OPT}\)</span></li>
+<li>整数规划无法在多项式时间内求解
+<ul>
+<li><span class="math inline">\(proof\)</span>:因为set cover问题是<span
+class="math inline">\(NP-hard\)</span>的，假如可以在多项式时间内解决整数规划问题，set
+cover问题就可以在多项式时间内解决了，矛盾。</li>
+</ul></li>
+<li>但是，线性规划问题是多项式时间内可解的</li>
+</ul></li>
+<li><p><strong>问题的线性规划形式：</strong> <span
+class="math display">\[
+\begin{aligned}
+&amp; \operatorname{minimize} \sum_{j=1}^m w_j x_j \\
+&amp; \text { subject to } \sum_{j: e_i \in S_j} x_j \geq 1, \quad i=1,
+\ldots, n, \\
+&amp; x_j \geq 0, \quad j=1, \ldots, m .
+\end{aligned}
+\]</span></p></li>
+<li><ul>
+<li>增加约束<span class="math inline">\(x_j \leq
+1\)</span>是冗余的，因为在问题的任何最优解中，我们可以在不影响解的可行性和不增加其成本的情况下将任意<span
+class="math inline">\(x_j &gt; 1\)</span>减少到<span
+class="math inline">\(x_j = 1\)</span></li>
+<li>因为此问题的线性规划是整数规划的松弛，所以该问题整性规划的解均满足线性规划，且该解在两个模型中具有相等的目标值</li>
+<li>线性规划最优解对应的目标值：<span class="math inline">\(Z_{L
+P}^*\)</span>，<span class="math inline">\(Z_{I D}^* \leq Z_{I
+D}^*=\mathrm{OPT}\)</span></li>
+</ul></li>
+</ul>
+<h1 id="vertex-cover-problem">vertex cover problem</h1>
+<ul>
+<li><p><strong>Definition</strong></p>
+<ul>
+<li><p><strong>Input:</strong></p>
+<p>无向图<span class="math inline">\(G=(V,E)\)</span></p>
+<p>任意点<span class="math inline">\(i \in V\)</span>的权值<span
+class="math inline">\(w_i \geq 0\)</span></p></li>
+<li><p><strong>Goal：</strong>寻找一个子集<span class="math inline">\(C
+\subseteq V\)</span>，满足对任意<span class="math inline">\((i, j) \in
+E\)</span>，<span class="math inline">\(i \in C\)</span> 或 <span
+class="math inline">\(j \in C\)</span>。</p></li>
+<li><p><strong>special case：</strong>当每个点<span
+class="math inline">\(w_i=1\)</span>时，称为unweighted set cover
+problem.</p></li>
+</ul></li>
+</ul>
+<h1 id="algorithm-for-set-cover-problem1lp-rounding">algorithm for set
+cover problem（1）：LP-rounding</h1>
+<ul>
+<li><p><strong>算法：</strong></p>
+<ul>
+<li>由set cover问题的线性规划模型得到最优解<span
+class="math inline">\(x^*\)</span></li>
+<li>对于集合<span class="math inline">\(E\)</span>中的任意<span
+class="math inline">\(e_i(i=1,...,n)\)</span>，<span
+class="math inline">\(f_i=\left|\left\{j: e_i \in
+S_j\right\}\right|\)</span>，令<span class="math inline">\(f=\max _{i=1,
+\ldots, n} f_i\)</span>。</li>
+<li>对<span class="math inline">\(x^*\)</span>进行四舍五入，若<span
+class="math inline">\(x_j^* \geq 1 / f\)</span>令<span
+class="math inline">\(\hat{x}_j=1\)</span>，否则令<span
+class="math inline">\(\hat{x}_j=0\)</span>。</li>
+</ul></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230214000356879.png" /></p>
+<ul>
+<li><span class="math inline">\(proof.\)</span>已知<span
+class="math inline">\(x^*\)</span>是线性规划模型的可行解，对于每个<span
+class="math inline">\(e_i\)</span>均满足<span
+class="math inline">\(\sum_{j: e_i \in S_j} x_j^* \geq
+1\)</span>，即<span
+class="math inline">\(E\)</span>中的每个元素均被覆盖。又由于<span
+class="math inline">\(f_i\)</span>、<span
+class="math inline">\(f\)</span>的定义，<span
+class="math inline">\(e_i\)</span>最终被覆盖的次数最多为<span
+class="math inline">\(f_i\leq
+f\)</span>，因此每次覆盖的可能性至少为<span
+class="math inline">\(1/f\)</span>。所以对于覆盖<span
+class="math inline">\(e_i\)</span>的<span
+class="math inline">\(S_j\)</span>满足<span class="math inline">\(x_j^*
+\geq 1 / f\)</span>。综上线性规划模型的最优解<span
+class="math inline">\(x^*\)</span>对应的集合是<span
+class="math inline">\(E\)</span>的覆盖集。</li>
+</ul></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230214000535877.png" /></p>
+<ul>
+<li><p><span class="math inline">\(proof.\)</span></p>
+<ul>
+<li><p>由<span class="math inline">\(Lemma
+1.5\)</span>的证明可知，对于每个<span class="math inline">\(j\in
+I\)</span>满足<span class="math inline">\(x_j^* \geq 1 /
+f\)</span>，所以有<span class="math inline">\(f w_j
+x_j^*\geq0(j=1,...,m)\)</span>。</p></li>
+<li><p><span class="math display">\[
+\begin{aligned}
+\sum_{j \in I} w_j &amp; \leq \sum_{j=1}^m w_j \cdot\left(f \cdot
+x_j^*\right) \\
+&amp; =f \sum_{j=1}^m w_j x_j^* \\
+&amp; =f \cdot Z_{L P}^* \\
+&amp; \leq f \cdot \mathrm{OPT}
+\end{aligned}
+\]</span></p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>special case：</strong>在vertex
+cover问题中，因为一个点会被两条边所覆盖，满足对<span
+class="math inline">\(\forall i \in
+V,f_i=2\)</span>。该问题的rounding算法的近似比为2.</p></li>
+</ul>
+<h1 id="algorithm-for-set-cover-problem2dual--rounding">algorithm for
+set cover problem（2）：dual--rounding</h1>
+<ul>
+<li><p><strong>set cover问题中线性规划松弛的对偶线性规划：</strong></p>
+<ul>
+<li><p>假设每个元素<span
+class="math inline">\(e_i\)</span>被一个集合覆盖的代价<span
+class="math inline">\(y_i\geq0\)</span>，设定被高权重集合覆盖的元素价值高，被低权重集合覆盖的元素价值低</p></li>
+<li><p>被同一集合覆盖的元素之和不能高于集合的权重，即<span
+class="math inline">\(\sum_{i: e_i \in S_j} y_i \leq
+w_j\)</span></p></li>
+<li><p>可以通过下面的线性规划找到元素可以被收取的最高总价</p></li>
+<li><p><span class="math display">\[
+\begin{array}{ll}
+\operatorname{maximize} &amp; \sum_{i=1}^n y_i \\
+\text { subject to } &amp; \sum_{i: e_i \in S_j} y_i \leq w_j, \quad
+j=1, \ldots, m, \\
+y_i \geq 0, &amp; i=1, \ldots, n .
+\end{array}
+\]</span></p></li>
+<li><p>模型（4）为set
+cover问题中线性规划松弛的<strong>对偶线性规划</strong>，（3）为（4）的原始线性规划</p></li>
+</ul></li>
+<li><p><strong>set cover问题对偶线性规划的弱对偶性质（weak duality
+property）：</strong></p>
+<ul>
+<li><span class="math inline">\(\sum_{i=1}^n y_i \leq \sum_{i=1}^n y_i
+\sum_{j: e_i \in S_j} x_j\)</span>
+<ul>
+<li>因为<span class="math inline">\(\sum_{j: e_i \in S_j} x_j \geq
+1\)</span></li>
+</ul></li>
+<li>又因为不等式右边可以改写为<span class="math inline">\(\sum_{i=1}^n
+y_i \sum_{j: e_i \in S_j} x_j=\sum_{j=1}^m x_j \sum_{i: e_i \in S_j}
+y_i\)</span>
+<ul>
+<li>左边为所有<span
+class="math inline">\(e_i\)</span>的价值乘以它所在<span
+class="math inline">\(S_j\)</span>的个数，右边先求属于同一<span
+class="math inline">\(S_j\)</span>的<span
+class="math inline">\(e_i\)</span>的价值和，在对所有的<span
+class="math inline">\(S_j\)</span>求和。</li>
+</ul></li>
+<li>因为<span
+class="math inline">\(y\)</span>是对偶线性规划的可行解，所以<span
+class="math inline">\(\sum_{j=1}^m x_j \sum_{i: e_i \in S_j} y_i \leq
+\sum_{j=1}^m x_j w_j\)</span>
+<ul>
+<li>因为<span class="math inline">\(\sum_{i: e_i \in S_j} y_i \leq
+w_j\)</span></li>
+</ul></li>
+<li>综上，<span class="math inline">\(\sum_{i=1}^n y_i \leq \sum_{j=1}^m
+w_j x_j\)</span></li>
+<li>也就是说，<strong>任意对偶问题线性规划可行解的目标值小于等于任意原线性规划问题可行解的目标值</strong>，即<span
+class="math inline">\(\sum_{i=1}^n y_i \leq Z_{L
+P}^*\)</span>。<strong>这被称为线性规划的弱对偶性质。</strong></li>
+<li>又因为<span class="math inline">\(Z_{L P}^* \leq
+\mathrm{OPT}\)</span>，可得<span class="math inline">\(\sum_{i=1}^n y_i
+\leq \mathrm{OPT}\)</span>。</li>
+</ul></li>
+<li><p><strong>set cover问题对偶线性规划的强对偶性质（strong duality
+property）：</strong></p>
+<ul>
+<li><strong>强对偶性质：只要原始线性规划和对偶线性规划都存在可行解，那么它们的最优值相等。</strong></li>
+<li><span
+class="math inline">\(x^*\)</span>是原线性规划问题的最优解，<span
+class="math inline">\(y^*\)</span>是对偶线性规划的最优解，则</li>
+<li><span class="math inline">\(\sum_{j=1}^m w_j x_j^*=\sum_{i=1}^n
+y_i^*\)</span></li>
+</ul></li>
+<li><p><strong>算法：</strong></p>
+<ul>
+<li><p>选择所有使得对偶线性规划模型约束是紧的<span
+class="math inline">\(S_j\)</span>，即所有的<span
+class="math inline">\(S_j\)</span>满足<span
+class="math inline">\(\sum_{i: e_i \in S_j}
+y_i^*=w_j\)</span>。这是一个<span
+class="math inline">\(f-\)</span>近似的近似算法。</p></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230214222356266.png" /></p>
+<ul>
+<li><p><span class="math inline">\(proof.\)</span></p>
+<ul>
+<li><p><span class="math inline">\(idea\)</span>:先假设有元素<span
+class="math inline">\(e_k\)</span>没有被<span
+class="math inline">\(y^*\)</span>对应的集合覆盖，在<span
+class="math inline">\(y^*\)</span>的基础上构造新的覆盖集<span
+class="math inline">\(y&#39;\)</span>，<span
+class="math inline">\(y&#39;\)</span>是满足对偶约束、目标值更优的覆盖集，矛盾。</p></li>
+<li><p>假设存在没有被覆盖的元素<span
+class="math inline">\(e_k\)</span>，则对任意覆盖<span
+class="math inline">\(e_k\)</span>的集合<span
+class="math inline">\(S_j\)</span>，有<span
+class="math inline">\(\sum_{i: e_i \in S_j}
+y_i^*&lt;w_j\)</span>。令<span class="math inline">\(\epsilon=\min _{j:
+e_i \in S_j}\left(w_j-\sum_{i: e_i \in S_j}
+y_i^*\right)\)</span>，由前面的不等式可知，<span
+class="math inline">\(\epsilon&gt;0\)</span></p></li>
+<li><p>考虑一个新的对偶解<span
+class="math inline">\(y&#39;\)</span>，其中<span
+class="math inline">\(y_k&#39;=y_k^*+\epsilon\)</span>，<span
+class="math inline">\(y&#39;\)</span>的剩余部分同<span
+class="math inline">\(y^*\)</span>。<span
+class="math inline">\(y&#39;\)</span>是对偶可行解，因为对任意包含<span
+class="math inline">\(e_k\)</span>的<span
+class="math inline">\(S_j\)</span>，有<span
+class="math inline">\(\sum_{i: e_i \in S_j} y_i^{\prime}=\sum_{i: e_i
+\in S_j} y_i^*+\epsilon \leq w_j\)</span>。</p></li>
+<li><p>由<span
+class="math inline">\(\epsilon\)</span>的定义，对于任意不包含<span
+class="math inline">\(e_k\)</span>的<span
+class="math inline">\(S_j\)</span>，<span class="math inline">\(\sum_{i:
+e_i \in S_j} y_i^{\prime}=\sum_{i: e_i \in S_j} y_i^* \leq
+w_j\)</span>。</p></li>
+<li><p>又因为<span class="math inline">\(\sum_{i=1}^n
+y_i^{\prime}&gt;\sum_{i=1}^n y_i^*\)</span>，这与<span
+class="math inline">\(y^*\)</span>的最优性相悖。</p></li>
+<li><p>综上，所有元素都被覆盖且<span
+class="math inline">\(I&#39;\)</span>是集合覆盖。</p></li>
+</ul></li>
+</ul></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230214222448527.png" /></p>
+<ul>
+<li><p><span class="math inline">\(proof.\)</span></p>
+<ul>
+<li><p><span class="math inline">\(idea.\)</span><strong>"charging"
+argument:</strong>当我们选择一个集合<span
+class="math inline">\(S_j\)</span>作为覆盖集合时，通过向它的每个元素"charging"<span
+class="math inline">\(y_i^*\)</span>来进行付费；对于每个包含<span
+class="math inline">\(e_i\)</span>的集合，每个元素最多被付费一次，因此总成本最多为<span
+class="math inline">\(f \sum_{i=1}^m
+y_i^*\)</span>，或者是对偶目标函数的<span
+class="math inline">\(f\)</span>倍。</p></li>
+<li><p>由于该算法得到的覆盖<span class="math inline">\(j\in
+I&#39;\)</span>均满足<span class="math inline">\(w_j=\sum_{i: e_i \in
+S_j} y_i^*\)</span>。</p></li>
+<li><p>则覆盖集的总价值</p></li>
+<li><p><span class="math display">\[
+\begin{aligned}
+\sum_{j \in I^{\prime}} w_j &amp; =\sum_{j \in I^{\prime}} \sum_{i: e_i
+\in S_j} y_i^* \\
+&amp; =\sum_{i=1}^n\left|\left\{j \in I^{\prime}: e_i \in
+S_j\right\}\right| \cdot y_i^* \\
+&amp; \leq \sum_{i=1}^n f_i y_i^* \\
+&amp; \leq f \sum_{i=1}^n y_i^* \\
+&amp; \leq f \cdot \mathrm{OPT} .
+\end{aligned}
+\]</span></p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>比较<span class="math inline">\(LP-rounding\)</span>与<span
+class="math inline">\(dual-rounding\)</span>算法：</p>
+<ul>
+<li>设由<span
+class="math inline">\(LP-rounding\)</span>算法得到的集合下标为<span
+class="math inline">\(I\)</span>，<span
+class="math inline">\(dual-rounding\)</span>算法得到的集合下标为<span
+class="math inline">\(I’\)</span>，有<span class="math inline">\(I
+\subseteq I^{\prime}\)</span>。</li>
+<li><strong>互补松弛性（complementary slackness）</strong>：
+<ul>
+<li>由前面的弱对偶性：<span class="math inline">\(\sum_{i=1}^n y_i \leq
+\sum_{i=1}^n y_i \sum_{j: e_i \in S_j} x_j=\sum_{j=1}^m x_j \sum_{i: e_i
+\in S_j} y_i \leq \sum_{j=1}^m x_j w_j\)</span></li>
+<li>又因为强对偶性表明，对于最优解<span
+class="math inline">\(x^*\)</span>与<span
+class="math inline">\(y^*\)</span>：<span
+class="math inline">\(\sum_{i=1}^n y_i^*=\sum_{j=1}^m w_j
+x_j^*\)</span>。只有<span
+class="math inline">\(y_i^*&gt;0\)</span>，<span
+class="math inline">\(\sum_{j: e_i \in S_j} x_j^*=1\)</span>；<span
+class="math inline">\(x_j^*&gt;0\)</span>，<span
+class="math inline">\(\sum_{i: e_i \in S_j}
+y_i^*=w_j\)</span>时满足这种情况。</li>
+<li><strong>1.互补松弛条件：</strong>每当线性规划变量(原始或对偶)非零时，对应的对偶或原始约束是紧的。</li>
+<li><strong>2.</strong>如果<span
+class="math inline">\(x^*\)</span>和<span
+class="math inline">\(y^*\)</span>是最优解，互补松弛条件必须成立。反之亦然,如果<span
+class="math inline">\(x^*\)</span>和<span
+class="math inline">\(y^*\)</span>分别是可行的原始解和对偶解，那么如果互补松弛条件成立，则两个目标函数的值相等，此解一定是最优的。</li>
+</ul></li>
+<li>如果对于任意的原始最优解<span
+class="math inline">\(x^*\)</span>，都有<span
+class="math inline">\(x_j^* &gt;
+0\)</span>，那么对于任意的对偶最优解<span
+class="math inline">\(y^*\)</span>，对应的关于<span
+class="math inline">\(S_j\)</span>的对偶不等式一定是紧的。回想上一节的算法，当<span
+class="math inline">\(x_j^ *\geq1 / f\)</span>时，令<span
+class="math inline">\(j\in I\)</span>。因此<span
+class="math inline">\(j\in I\)</span>意味着<span
+class="math inline">\(j\in I&#39;\)</span>，从而<span
+class="math inline">\(I&#39;\subseteq I\)</span>。</li>
+<li>综上，<span class="math inline">\(I&#39;= I\)</span>。</li>
+</ul></li>
+</ul>
+<h1 id="algorithm-for-set-cover-problem3primal-dual-algorithm">algorithm
+for set cover problem（3）：primal-dual algorithm</h1>
+<ul>
+<li><p>前两节算法的一个缺点是<strong>需要求解一个线性规划</strong>。虽然线性程序是高效可解的，并且其算法在实际应用中是快速的，但是<strong>特殊目的的算法往往要快得多</strong>。</p></li>
+<li><p><strong>最优对偶解的性质</strong></p></li>
+<li><p><strong>原始-对偶优化算法：</strong>线性规划问题、网络流问题、最短路径问题等都有原-对偶优化算法。<strong>原始-对偶算法从一个对偶可行解开始，利用对偶信息来推断一个原始的、可能不可行的解。如果原始解确实不可行，则修改对偶解以增加对偶目标函数的值。</strong></p></li>
+<li><p><strong>算法：</strong></p>
+<ul>
+<li><p><span
+class="math inline">\(idea.\)</span>构造对偶解而不是求解对偶<span
+class="math inline">\(LP\)</span>。</p></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215132648220.png" /></p>
+<ul>
+<li><p><strong>step1：</strong>给出一个初始对偶可行解<span
+class="math inline">\(y=0\)</span>，此时<span
+class="math inline">\(I\)</span>为空集。</p></li>
+<li><p><strong>step2：</strong>进行最多<span
+class="math inline">\(n\)</span>次循环，在每次循环中假如存在不被覆盖的元素<span
+class="math inline">\(e_i\)</span>，增加对应的变量<span
+class="math inline">\(y_i\)</span>直到引入覆盖<span
+class="math inline">\(e_i\)</span>的<span
+class="math inline">\(S_l\)</span>，满足<span
+class="math inline">\(\sum_{j: e_j \in S_{\ell}}
+y_j=w_{\ell}\)</span>。</p></li>
+<li><p><strong>step3：</strong>在每次循环结束后<span
+class="math inline">\(I \leftarrow I
+\cup\{\ell\}\)</span>，进入下一次循环。</p></li>
+</ul></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215132748034.png" /></p>
+<ul>
+<li>同<span class="math inline">\(dual-rounding\)</span>算法。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="algorithm-for-set-cover-problem4a-greedy-algorithm">algorithm
+for set cover problem（4）：A greedy algorithm</h1>
+<ul>
+<li><p><strong>算法：</strong></p>
+<ul>
+<li><p><span class="math inline">\(idea:\)</span>每一轮选择一个新的集合
+，直到所有元素被覆盖。</p></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215183851851.png" /></p>
+<ul>
+<li><strong>step1：</strong>初始化<span
+class="math inline">\(I\)</span>为空集，对任意<span
+class="math inline">\(j\)</span>，<span class="math inline">\(\hat{S}_j
+\leftarrow S_j\)</span></li>
+<li><strong>step2：</strong>进行若干次循环，直到<span
+class="math inline">\(I\)</span>对应的集合是<span
+class="math inline">\(E\)</span>的覆盖</li>
+<li><strong>step3：</strong>在每次循环中，选取<strong>权重与其包含的当前未覆盖元素个数之比最小</strong>的集合，将该集合的下标并入<span
+class="math inline">\(I\)</span>。对所有<span
+class="math inline">\(\hat{S}_j\)</span>去掉已经被覆盖的元素。进入下一次循环。</li>
+</ul></li>
+<li><p><strong>时间复杂度：</strong><span
+class="math inline">\(O(m^2)\)</span></p></li>
+</ul></li>
+<li><p><strong>notation and a useful mathematical fact:</strong></p>
+<ul>
+<li><strong><span class="math inline">\(k\)</span>次调和数<span
+class="math inline">\(H_k\)</span>（kth harmonic number）：</strong>
+<ul>
+<li><span
+class="math inline">\(H_k=1+\frac{1}{2}+\frac{1}{3}+\cdots+\frac{1}{k}\)</span></li>
+<li><span class="math inline">\(H_k \approx \ln k\)</span></li>
+</ul></li>
+<li><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215191023131.png" /></li>
+</ul></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215191330112.png" /></p>
+<ul>
+<li><p><span class="math inline">\(proof.\)</span></p>
+<ul>
+<li><p>令<span class="math inline">\(n_k\)</span>表示第<span
+class="math inline">\(k\)</span>次迭代开始时剩余未覆盖的元素个数。假如算法总共进行了<span
+class="math inline">\(\ell\)</span>次迭代，则<span
+class="math inline">\(n_1=n\)</span>，<span
+class="math inline">\(n_{l+1}=0\)</span>。</p></li>
+<li><p>选择任意次迭代<span class="math inline">\(k\)</span>，令<span
+class="math inline">\(I_k\)</span>表示迭代<span
+class="math inline">\(1\)</span>到<span class="math inline">\(k -
+1\)</span>中所选集合的下标。</p></li>
+<li><p>对任意<span class="math inline">\(j=1,...,m\)</span>，令<span
+class="math inline">\(\hat{S}_j\)</span>表示迭代开始时<span
+class="math inline">\(S_j\)</span>中未覆盖元素的集合，<span
+class="math inline">\(\hat{S}_j=S_j-\bigcup_{p \in I_k}
+S_p\)</span></p></li>
+<li><p>对于在<span
+class="math inline">\(k\)</span>次迭代中选择的集合<span
+class="math inline">\(j\)</span>，满足<span class="math inline">\(w_j
+\leq \frac{n_k-n_{k+1}}{n_k} \mathrm{OPT}\)</span></p>
+<ul>
+<li>设<span
+class="math inline">\(O\)</span>包含最优解中集合的指标，则在第<span
+class="math inline">\(k\)</span>次迭代中满足<span
+class="math inline">\(\min _{j: \hat{S}_j \neq \emptyset}
+\frac{w_j}{\left|\hat{S}_j\right|} \leq \frac{\sum_{j \in O}
+w_j}{\sum_{j \in O}\left|\hat{S}_j\right|}=\frac{\mathrm{OPT}}{\sum_{j
+\in O}\left|\hat{S}_j\right|} \leq \frac{\mathrm{OPT}}{n_k}\)</span>
+<ul>
+<li>第一个不等式是因为Fact 1.10</li>
+<li>最后一个不等式是因为<span class="math inline">\(U_{j \in O}
+\hat{S}_j\)</span>必须包含着剩余<span
+class="math inline">\(n_k\)</span>个没被覆盖的元素，所以<span
+class="math inline">\(\sum_{j \in O}\left|\hat{S}_j\right|\geq
+n_k\)</span></li>
+</ul></li>
+<li>又因为<span
+class="math inline">\(n_{k+1}=n_k-\left|\hat{S}_j\right|\)</span>，所以<span
+class="math inline">\(w_j \leq \frac{\left|\hat{S}_j\right|
+\mathrm{OPT}}{n_k}=\frac{n_k-n_{k+1}}{n_k} \mathrm{OPT}\)</span></li>
+</ul></li>
+<li><p><span class="math display">\[
+\begin{aligned}
+\sum_{j \in I} w_j &amp; \leq \sum_{k=1}^{\ell} \frac{n_k-n_{k+1}}{n_k}
+\mathrm{OPT} \\
+&amp; \leq \mathrm{OPT} \cdot
+\sum_{k=1}^{\ell}\left(\frac{1}{n_k}+\frac{1}{n_k-1}+\cdots+\frac{1}{n_{k+1}+1}\right)
+\\
+&amp; =\mathrm{OPT} \cdot \sum_{i=1}^n \frac{1}{i} \\
+&amp; =H_n \cdot \mathrm{OPT}
+\end{aligned}
+\]</span></p>
+<ul>
+<li><p>第二个不等式是因为<span class="math inline">\(\frac{1}{n_k} \leq
+\frac{1}{n_k-i}\)</span></p></li>
+<li><p><span class="math display">\[
+\begin{aligned}\frac{n_k-n_{k+1}}{n_k}&amp;=\frac{1}{n_k}*(n_k-n_{k+1})\\
+&amp;=\frac{1}{n_k}+\frac{1}{n_k}+\cdots+\frac{1}{n_{k}}\\
+&amp;\leq\frac{1}{n_k}+\frac{1}{n_k-1}+\cdots+\frac{1}{n_{k+1}+1}\end{aligned}
+\]</span></p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215200149867.png" /></p>
+<ul>
+<li><p><strong>对比<span
+class="math inline">\(greedy-algorithm\)</span>和$LP-rounding
+$</strong></p></li>
+<li><p><span class="math inline">\(proof.\)</span></p>
+<ul>
+<li><p><span class="math inline">\(idea.\)</span>构造对偶拟合</p></li>
+<li><p><strong>对偶拟合（dual
+fitting）</strong>：构造一个不可行对偶解，<strong>这个解的目标值与原始解的值相等</strong>，对对偶解进行单值放缩使之具有可行性。</p></li>
+<li><p><strong>step1：构造不可行对偶解。</strong></p>
+<ul>
+<li>假设在第<span class="math inline">\(k\)</span>次迭代中加入集合<span
+class="math inline">\(S_j\)</span>，对任意在此次迭代之前没被覆盖的元素<span
+class="math inline">\(e_i \in \hat{S}_j\)</span>，令<span
+class="math inline">\(y_i=w_j /\left|\hat{S}_j\right|\)</span>。<span
+class="math inline">\(w_j=\sum_{i: e_i \in \hat{S}_j}
+y_i\)</span>，因为在第<span
+class="math inline">\(k\)</span>次迭代中选择的子集<span
+class="math inline">\(S_j\)</span>的权重等于在第<span
+class="math inline">\(k\)</span>次迭代中覆盖的未覆盖元素的对偶<span
+class="math inline">\(y_i\)</span>之和，因此<span
+class="math inline">\(\sum_{j \in I} w_j=\sum_{i=1}^n
+y_i\)</span>。</li>
+</ul></li>
+<li><p><strong>step2：对不可行对偶解进行放缩，得到可行对偶解（证明<span
+class="math inline">\(y^{\prime}=\frac{1}{H_g}
+y\)</span>可行）</strong></p>
+<ul>
+<li><p>证明<span class="math inline">\(y^{\prime}=\frac{1}{H_g}
+y\)</span>可行，即证明对任意的<span
+class="math inline">\(S_j\)</span>有<span class="math inline">\(\sum_{i:
+e_i \in S_j} y_i^{\prime} \leq w_j\)</span>。</p></li>
+<li><p>令<span class="math inline">\(a_k\)</span>为第<span
+class="math inline">\(k\)</span>次迭代开始前仍未被覆盖的元素个数，其中<span
+class="math inline">\(a_1=\left|S_j\right|\)</span>，<span
+class="math inline">\(a_{\ell+1}=0\)</span>。令<span
+class="math inline">\(A_k\)</span>为经过第<span
+class="math inline">\(k\)</span>次迭代后被新覆盖的元素个数，<span
+class="math inline">\(\left|A_k\right|=a_k-a_{k+1}\)</span>。假如<span
+class="math inline">\(S_p\)</span>是第<span
+class="math inline">\(k\)</span>次迭代被加入的集合，则对任意<span
+class="math inline">\(e_i \in A_k\)</span>，有<span
+class="math inline">\(y_i^{\prime}=\frac{w_p}{H_g\left|\hat{S}_p\right|}
+\leq \frac{w_j}{H_g a_k}\)</span></p>
+<ul>
+<li><span class="math inline">\(\hat{S}_p\)</span>为第<span
+class="math inline">\(k\)</span>次迭代开始前<span
+class="math inline">\(S_p\)</span>包含的没被覆盖的元素，<span
+class="math inline">\(S_p\)</span>之所以被选中是因为它的权重与它所包含的未覆盖元素个数的比值最小。</li>
+</ul></li>
+<li><p><span class="math display">\[
+\begin{aligned}
+\sum_{i: e_i \in S_j} y_i^{\prime} &amp; =\sum_{k=1}^{\ell} \sum_{i: e_i
+\in A_k} y_i^{\prime} \\
+&amp; \leq \sum_{k=1}^{\ell}\left(a_k-a_{k+1}\right) \frac{w_j}{H_g a_k}
+\\
+&amp; \leq \frac{w_j}{H_g} \sum_{k=1}^{\ell} \frac{a_k-a_{k+1}}{a_k} \\
+&amp; \leq \frac{w_j}{H_g}
+\sum_{k=1}^{\ell}\left(\frac{1}{a_k}+\frac{1}{a_k-1}+\cdots+\frac{1}{a_{k+1}+1}\right)
+\\
+&amp; \leq \frac{w_j}{H_g} \sum_{i=1}^{\left|S_j\right|} \frac{1}{i} \\
+&amp; =\frac{w_j}{H_g} H_{\left|S_j\right|} \\
+&amp; \leq w_j
+\end{aligned}
+\]</span></p>
+<ul>
+<li>其中，<span class="math inline">\(g=\max
+_j\left|S_j\right|\)</span>，显然<span
+class="math inline">\(H_{\left|S_j\right|} \leq H_g\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215200341492.png" /></p></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215200358132.png" /></p></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215200424819.png" /></p></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230215200440921.png" /></p></li>
+</ul>
+<h1
+id="algorithm-for-set-cover-problem5a-randomized-rounding-algorithm">algorithm
+for set cover problem（5）：A randomized rounding algorithm</h1>
+<ul>
+<li><p>在本节中，我们考虑了一种设计集合覆盖问题近似算法的最终技术。尽管该算法<strong>比上一节的贪婪算法更慢，也没有更好的保证</strong>，但我们将其包括在这里，因为它引入了<strong>在近似算法中使用随机化的概念</strong>，我们将在第五章中深入讨论这个想法。</p></li>
+<li><p><strong>算法：</strong></p>
+<ul>
+<li><p>对set
+cover问题求解一个线性规划松弛，然后将分式解<strong>随机舍入</strong>为整数解。</p></li>
+<li><p><strong>随机舍入：</strong></p>
+<ul>
+<li><p>设<span class="math inline">\(x^*\)</span>为<span
+class="math inline">\(LP\)</span>松弛的最优解，希望将<span
+class="math inline">\(x^*\)</span>取整为1或者0，从而在不增加过多成本的情况下，得到set
+cover问题的整数规划形式的解<span
+class="math inline">\(\hat{x}\)</span>。</p></li>
+<li><p><span class="math inline">\(x_j^*\)</span>为将<span
+class="math inline">\(\hat{x}_j\)</span>设为1的概率，因此每个子集<span
+class="math inline">\(S_j\)</span>以概率<span
+class="math inline">\(x_j^*\)</span>包含在我们的解中，其中<span
+class="math inline">\(m\)</span>个事件( <span
+class="math inline">\(S_j\)</span>包含在我们的解中)是独立的随机事件。</p></li>
+<li><p>设<span
+class="math inline">\(X_j\)</span>是一个随机变量，如果子集<span
+class="math inline">\(S_j\)</span>包含在解中，则<span
+class="math inline">\(X_j\)</span>为1，否则为0。<span
+class="math inline">\(E\left[\sum_{j=1}^m w_j X_j\right]=\sum_{j=1}^m
+w_j \operatorname{Pr}\left[X_j=1\right]=\sum_{j=1}^m w_j x_j^*=Z_{L
+P}^*\)</span></p></li>
+<li><p>由随机舍入得到的集合既有可能是覆盖，也有可能不是。计算给定元素<span
+class="math inline">\(e_i\)</span>不被这个过程覆盖的概率，即包含<span
+class="math inline">\(e_i\)</span>的子集中没有一个包含在解中的概率，为<span
+class="math inline">\(\prod_{j: e_i \in
+S_j}\left(1-x_j^*\right)\)</span>。</p></li>
+<li><p><span class="math display">\[
+\begin{aligned}
+\operatorname{Pr}\left[e_i \text { not covered }\right] &amp; =\prod_{j:
+e_i \in S_j}\left(1-x_j^*\right) \\
+&amp; \leq \prod_{j: e_i \in S_j} e^{-x_j^*} \\
+&amp; =e^{-\sum_{j: e_i \in S_j} x_j^*} \\
+&amp; \leq e^{-1}
+\end{aligned}
+\]</span></p>
+<ul>
+<li>第一的不等式是因为<span class="math inline">\(1-x \leq
+e^{-x}\)</span></li>
+<li>最后一个不等式是因为在<span
+class="math inline">\(LP\)</span>模型中<span
+class="math inline">\(\sum_{j: e_i \in S_j} x_j^* \geq 1\)</span>。</li>
+</ul></li>
+<li><p>因此<strong>在最坏的情况下，这种随机取整过程很可能不会产生集合覆盖。</strong></p></li>
+</ul></li>
+<li><p><strong>什么叫高概率工作的算法？</strong></p>
+<ul>
+<li>假设对于任意常数<span
+class="math inline">\(c\)</span>，我们可以设计一个多项式时间算法，其失败的概率至多是一个逆多项式<span
+class="math inline">\(n^{-c}\)</span>，然后我们说我们有一个高概率工作的算法。</li>
+</ul></li>
+<li><p><strong>如何设计出一个更有可能产生集合覆盖的算法？</strong></p>
+<ul>
+<li>如果我们能够<strong>设计一个随机过程</strong>使得对于某个常数<span
+class="math inline">\(c\geq2\)</span>，<span
+class="math inline">\(\operatorname{Pr}\left[e_i\right.\)</span> not
+covered <span class="math inline">\(] \leq \frac{1}{n^c}\)</span></li>
+<li>那么<span class="math inline">\(\operatorname{Pr}[\)</span> there
+exists an uncovered element <span class="math inline">\(] \leq
+\sum_{i=1}^n \operatorname{Pr}\left[e_i\right.\)</span> not covered
+<span class="math inline">\(] \leq \frac{1}{n^{c-1}}\)</span></li>
+<li>结合上一部分可以称这个算法会有一个高概率的集合覆盖。</li>
+</ul></li>
+<li><p><strong>如何达到<span
+class="math inline">\(n^{-c}\)</span>的界？</strong></p>
+<ul>
+<li><p>对于任意的集合<span
+class="math inline">\(S_j\)</span>，假设一个硬币以<span
+class="math inline">\(x^*_j\)</span>的概率正面朝上，将硬币抛<span
+class="math inline">\(clnn\)</span>次，如果硬币在任意一次正面朝上，则将<span
+class="math inline">\(S_j\)</span>包含在解中。可以发现<span
+class="math inline">\(S_j\)</span>不被包含在解中的概率为<span
+class="math inline">\(\left(1-x_j^*\right)^{c \ln n}\)</span>。</p></li>
+<li><p>此时</p></li>
+<li><p><span class="math display">\[
+\begin{aligned}
+\operatorname{Pr}\left[e_i \text { not covered }\right] &amp; =\prod_{j:
+e_i \in S_j}\left(1-x_j^*\right)^{c \ln n} \\
+&amp; \leq \prod_{j: e_i \in S_j} e^{-x_j^*(c \ln n)} \\
+&amp; =e^{-(c \ln n) \sum_{j: e_i \in S_j} x_j^*} \\
+&amp; \leq \frac{1}{n^c}
+\end{aligned}
+\]</span></p></li>
+</ul></li>
+</ul></li>
+<li><p><img
+src="../images/An-introduction-to-approximation-algorithms/image-20230216183518422.png" /></p>
+<ul>
+<li><p>证明该算法在产生集合覆盖的情况下具有良好的期望值</p></li>
+<li><p><span class="math inline">\(proof.\)</span></p>
+<ul>
+<li><p><strong>step1：计算期望</strong></p></li>
+<li><p><span class="math inline">\(p_j\left(x_j^*\right)\)</span>是<span
+class="math inline">\(x_j^*\)</span>的函数，是将集合<span
+class="math inline">\(S_j\)</span>包含在解中的概率。<span
+class="math inline">\(p_j\left(x_j^*\right)=1-\left(1-x_j^*\right)^{c
+\ln n}\)</span>。若<span class="math inline">\(x_j^*
+\in[0,1]\)</span>且<span class="math inline">\(c \ln n \geq
+1\)</span>，则得到导数<span
+class="math inline">\(p_j^{\prime}\left(x_j^*\right)=(c \ln
+n)\left(1-x_j^*\right)^{(c \ln n)-1} \leq(c \ln n)\)</span>。</p></li>
+<li><p>因为<span class="math inline">\(p_j(0)=0\)</span>，且函数<span
+class="math inline">\(p_j\)</span>的斜率在区间<span
+class="math inline">\([0,1]\)</span>上方以<span class="math inline">\(c
+\ln n\)</span>为界，所以在区间<span
+class="math inline">\([0,1]\)</span>上<span
+class="math inline">\(p_j\left(x_j^*\right) \leq(c \ln n)
+x_j^*\)</span>。设<span
+class="math inline">\(X_j\)</span>是一个随机变量，如果子集<span
+class="math inline">\(S_j\)</span>包含在解中，则<span
+class="math inline">\(X_j\)</span>为1，否则为0。则，</p></li>
+<li><p><span class="math display">\[
+\begin{aligned}
+E\left[\sum_{j=1}^m w_j X_j\right] &amp; =\sum_{j=1}^m w_j
+\operatorname{Pr}\left[X_j=1\right] \\
+&amp; \leq \sum_{j=1}^m w_j(c \ln n) x_j^* \\
+&amp; =(c \ln n) \sum_{j=1}^m w_j x_j^*=(c \ln n) Z_{L P}^*
+\end{aligned}
+\]</span></p></li>
+<li><p><strong>step2：在给定集合覆盖产生的情况下，约束解的期望值</strong></p></li>
+<li><p>设<span
+class="math inline">\(F\)</span>是由随机过程得到的解是可行覆盖集的事件，<span
+class="math inline">\(\bar{F}\)</span>是这个事件的补集.由前面的讨论知道<span
+class="math inline">\(\operatorname{Pr}[F] \geq
+1-\frac{1}{n^{c-1}}\)</span>。</p></li>
+<li><p><span class="math display">\[
+E\left[\sum_{j=1}^m w_j X_j\right]=E\left[\sum_{j=1}^m w_j X_j \mid
+F\right] \operatorname{Pr}[F]+E\left[\sum_{j=1}^m w_j X_j \mid
+\bar{F}\right] \operatorname{Pr}[\bar{F}]
+\]</span></p></li>
+<li><p>因为<span class="math inline">\(w_j\geq0\)</span>，且<span
+class="math inline">\(E\left[\sum_{j=1}^m w_j X_j \mid \bar{F}\right]
+\geq 0\)</span></p></li>
+<li><p>所以当<span class="math inline">\(n\geq2\)</span>且<span
+class="math inline">\(c\geq2\)</span>时</p></li>
+<li><p><span class="math display">\[
+\begin{aligned}
+E\left[\sum_{j=1}^m w_j X_j \mid F\right] &amp;
+=\frac{1}{\operatorname{Pr}[F]}\left(E\left[\sum_{j=1}^m w_j
+X_j\right]-E\left[\sum_{j=1}^m w_j X_j \mid \bar{F}\right]
+\operatorname{Pr}[\bar{F}]\right) \\
+&amp; \leq \frac{1}{\operatorname{Pr}[F]} \cdot E\left[\sum_{j=1}^m w_j
+X_j\right] \\
+&amp; \leq \frac{(c \ln n) Z_{L P}^*}{1-\frac{1}{n^{c-1}}} \\
+&amp; \leq 2 c(\ln n) Z_{L P}^*
+\end{aligned}
+\]</span></p></li>
+</ul></li>
+</ul></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">xxl</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/post/e0de8bd7.html">http://example.com/post/e0de8bd7.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">xxl's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95/">近似算法</a></div><div class="post_share"><div class="social-share" data-image="/../images/The-bin-packing-problem/coverim.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/a3fa5835.html"><img class="next-cover" src="/img/1284120.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">cpp学习笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/c75b23f2.html" title="The bin-packing problem"><img class="cover" src="/../images/The-bin-packing-problem/coverim.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-07</div><div class="title">The bin-packing problem</div></div></a></div><div><a href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"><img class="cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-07</div><div class="title">Approximation Algorithms Week 1--Vertex cover and Linear Programmng</div></div></a></div><div><a href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding"><img class="cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="title">Approximation Algorithms Week 2--Knapsack and Rounding</div></div></a></div><div><a href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"><img class="cover" src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-09</div><div class="title">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">xxl</div><div class="author-info__description">study with me</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Xiaxlll"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%93%E4%B8%9A%E5%90%8D%E8%AF%8D"><span class="toc-number">1.</span> <span class="toc-text">专业名词</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#p%E9%97%AE%E9%A2%98np%E9%97%AE%E9%A2%98npc%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">P问题、NP问题、NPC问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">近似算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-number">3.2.</span> <span class="toc-text">近似算法的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ptas"><span class="toc-number">3.3.</span> <span class="toc-text">PTAS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#max-snp-hard-problem"><span class="toc-number">3.4.</span> <span class="toc-text">MAX SNP-hard problem</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#the-set-cover-problem"><span class="toc-number">4.</span> <span class="toc-text">the set cover problem</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#vertex-cover-problem"><span class="toc-number">5.</span> <span class="toc-text">vertex cover problem</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#algorithm-for-set-cover-problem1lp-rounding"><span class="toc-number">6.</span> <span class="toc-text">algorithm for set
+cover problem（1）：LP-rounding</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#algorithm-for-set-cover-problem2dual--rounding"><span class="toc-number">7.</span> <span class="toc-text">algorithm for
+set cover problem（2）：dual--rounding</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#algorithm-for-set-cover-problem3primal-dual-algorithm"><span class="toc-number">8.</span> <span class="toc-text">algorithm
+for set cover problem（3）：primal-dual algorithm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#algorithm-for-set-cover-problem4a-greedy-algorithm"><span class="toc-number">9.</span> <span class="toc-text">algorithm
+for set cover problem（4）：A greedy algorithm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#algorithm-for-set-cover-problem5a-randomized-rounding-algorithm"><span class="toc-number">10.</span> <span class="toc-text">algorithm
+for set cover problem（5）：A randomized rounding algorithm</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/e0de8bd7.html" title="An introduction to approximation algorithms"><img src="/../images/The-bin-packing-problem/coverim.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="An introduction to approximation algorithms"/></a><div class="content"><a class="title" href="/post/e0de8bd7.html" title="An introduction to approximation algorithms">An introduction to approximation algorithms</a><time datetime="2023-02-13T05:28:31.000Z" title="发表于 2023-02-13 13:28:31">2023-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a3fa5835.html" title="cpp学习笔记"><img src="/img/1284120.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cpp学习笔记"/></a><div class="content"><a class="title" href="/post/a3fa5835.html" title="cpp学习笔记">cpp学习笔记</a><time datetime="2023-01-19T22:54:11.000Z" title="发表于 2023-01-20 06:54:11">2023-01-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding"/></a><div class="content"><a class="title" href="/post/b4667801.html" title="Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding">Approximation Algorithms Week 3--Bin Packing,Linear Programming and Rounding</a><time datetime="2023-01-08T18:27:29.000Z" title="发表于 2023-01-09 02:27:29">2023-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 2--Knapsack and Rounding"/></a><div class="content"><a class="title" href="/post/4b0b12b.html" title="Approximation Algorithms Week 2--Knapsack and Rounding">Approximation Algorithms Week 2--Knapsack and Rounding</a><time datetime="2023-01-08T08:38:36.000Z" title="发表于 2023-01-08 16:38:36">2023-01-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"><img src="/../images/Approximation-Algorithms-Week-1-Vertex-cover-and-Linear-Programmng/cover1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Approximation Algorithms Week 1--Vertex cover and Linear Programmng"/></a><div class="content"><a class="title" href="/post/d8762d8c.html" title="Approximation Algorithms Week 1--Vertex cover and Linear Programmng">Approximation Algorithms Week 1--Vertex cover and Linear Programmng</a><time datetime="2023-01-07T07:16:37.000Z" title="发表于 2023-01-07 15:16:37">2023-01-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By xxl</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
